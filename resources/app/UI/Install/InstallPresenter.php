@@ -6,7 +6,6 @@ namespace App\UI\Install;
 
 use App\UI\Backend\Sign\SignUpFactory;
 use App\UI\Install\Factory\DatabaseFactory;
-use App\UI\Install\Factory\TablesFactory;
 use App\UI\Install\Factory\WebsiteFactory;
 use Drago\Application\UI\Alert;
 use Drago\Localization\TranslatorAdapter;
@@ -23,10 +22,10 @@ final class InstallPresenter extends Presenter
 {
 	use TranslatorAdapter;
 
+
 	public function __construct(
 		private readonly Steps $steps,
 		private readonly DatabaseFactory $databaseFactory,
-		private readonly TablesFactory $tablesFactory,
 		private readonly WebsiteFactory $websiteFactory,
 		private readonly SignUpFactory $userSingUpFactory,
 		private readonly MigrationService $migrationService,
@@ -35,10 +34,7 @@ final class InstallPresenter extends Presenter
 	}
 
 
-	/**
-	 * Prepare the installation step before rendering.
-	 * @throws Throwable
-	 */
+	/** Prepare the installation step before rendering. @throws Throwable */
 	protected function beforeRender(): void
 	{
 		parent::beforeRender();
@@ -62,19 +58,24 @@ final class InstallPresenter extends Presenter
 	}
 
 
+	/** Handle migration run. */
 	public function handleRunMigration(): void
 	{
 		$file = $this->getHttpRequest()->getQuery('file');
-		$this->sendJson($this->migrationService->run($file));
+		$this->sendJson($this->migrationService->run((string) $file));
 	}
 
 
+	/** Handle migration success. */
 	public function handleMigrationsDone(): void
 	{
+		$this->steps->setStep(3);
 		$this->flashMessage('Instalace proběhla úspěšně!', Alert::Success);
+		//$this->redrawControl('install');
 	}
 
 
+	/** Handle migration failure. */
 	public function handleMigrationsFail(): void
 	{
 		$this->flashMessage('Instalace selhala.', Alert::Danger);
@@ -85,19 +86,10 @@ final class InstallPresenter extends Presenter
 	protected function createComponentDatabase(): Form
 	{
 		$form = $this->databaseFactory->create();
+		$form->setTranslator($this->translator);
 		$form->onSuccess[] = function () {
+			$this->steps->setStep(2);
 			$this->flashMessage('Database settings were successful.', Alert::Success);
-		};
-		return $form;
-	}
-
-
-	/** Create and return the table configuration form. */
-	protected function createComponentTables(): Form
-	{
-		$form = $this->tablesFactory->create();
-		$form->onSuccess[] = function () {
-			$this->flashMessage('Database installation was successful.', Alert::Success);
 		};
 		return $form;
 	}
@@ -107,7 +99,9 @@ final class InstallPresenter extends Presenter
 	protected function createComponentWebsite(): Form
 	{
 		$form = $this->websiteFactory->create();
+		$form->setTranslator($this->translator);
 		$form->onSuccess[] = function () {
+			$this->steps->setStep(4);
 			$this->flashMessage('Site settings successful.', Alert::Success);
 		};
 		return $form;
@@ -117,8 +111,8 @@ final class InstallPresenter extends Presenter
 	/** Create and return the account creation form for the administrator. */
 	protected function createComponentAccount(): Form
 	{
-		$form = $this->userSingUpFactory;
-		$form = $form->create();
+		$form = $this->userSingUpFactory->create();
+		$form->setTranslator($this->translator);
 		$form->onSuccess[] = function () {
 			$this->steps->setStep(5);
 			$this->flashMessage('Account administrator registration successful.', Alert::Success);

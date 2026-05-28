@@ -1,7 +1,5 @@
 export default class InstallWizard {
 	#naja;
-	#statusFile;
-	#statusCounter;
 	#installBtn;
 
 	initialize(naja) {
@@ -11,75 +9,64 @@ export default class InstallWizard {
 	}
 
 	#init() {
-		this.#initSendButton();
-		this.#initInstallButton();
-	}
+		this.#initButton('btn-send', (btn) => {
+			this.#naja.makeRequest('GET', btn.dataset.url, null, { history: false })
+				.catch(() => { btn.disabled = false; });
+		});
 
-	#initSendButton() {
-		const button = document.getElementById('btn-send');
-		if (!button || button.dataset.initialized) return;
-
-		button.dataset.initialized = 'true';
-		button.addEventListener('click', (e) => {
-			button.disabled = true;
-			this.#naja
-				.makeRequest('GET', e.target.dataset.url, null, { history: false })
-				.catch(() => { button.disabled = false; });
+		this.#initButton('installBtn', async (btn) => {
+			await this.#runInstall(btn);
 		});
 	}
 
-	#initInstallButton() {
-		const btn = document.getElementById('installBtn');
+	#initButton(id, callback) {
+		const btn = document.getElementById(id);
 		if (!btn || btn.dataset.initialized) return;
 
 		btn.dataset.initialized = 'true';
-		btn.addEventListener('click', async () => {
+		btn.addEventListener('click', () => {
 			btn.disabled = true;
-			await this.#runInstall();
-		});
-	}
-
-	#applyStatus(state) {
-		['running', 'success', 'error'].forEach(s => {
-			const el = document.getElementById(`install-status-${s}`);
-			if (!el) return;
-			el.classList.toggle('d-none', s !== state);
-			el.classList.toggle('d-flex', s === state);
+			callback(btn);
 		});
 	}
 
 	#updateChip(state, file = null, done = null, total = null) {
-		this.#applyStatus(state);
-		const counter = done !== null ? `${done} / ${total}` : null;
+		const container = document.getElementById('install-status-container');
+		if (!container) return;
 
-		if (state === 'running') {
-			if (file && this.#statusFile) this.#statusFile.textContent = file;
-			if (counter) document.getElementById('status-counter').textContent = counter;
-		} else if (state === 'success') {
-			if (counter) document.getElementById('status-counter-success').textContent = counter;
-		} else if (state === 'error') {
-			if (counter) document.getElementById('status-counter-error').textContent = counter;
-		}
+		container.classList.remove('d-none');
+
+		['running', 'success', 'error'].forEach(s => {
+			const icon = document.getElementById(`status-icon-${s}`);
+			if (icon) icon.classList.toggle('d-none', s !== state);
+		});
+
+		const statusFile = document.getElementById('status-file');
+		const statusCounter = document.getElementById('status-counter');
+
+		if (file && statusFile) statusFile.textContent = file;
+		if (done !== null && statusCounter) statusCounter.textContent = `${done} / ${total}`;
 	}
 
-	async #runInstall() {
-		this.#installBtn = document.getElementById('installBtn');
-		this.#statusFile = document.getElementById('status-file');
-		this.#statusCounter = document.getElementById('status-counter');
-
+	async #runInstall(btn) {
+		this.#installBtn = btn;
 		const steps = document.querySelectorAll('#steps .step');
 		const total = steps.length;
 		let done = 0;
 		let allOk = true;
+		let lastFile = null;
+
+		const spinner = document.querySelector('.spinner');
+		if (spinner) spinner.style.display = 'block';
 
 		for (const step of steps) {
 			const { url, step: file } = step.dataset;
+			lastFile = file;
 
 			this.#updateChip('running', file, done + 1, total);
 
 			try {
-				const res = await fetch(url).then(r => r.json());
-
+				const res = await this.#naja.makeRequest('GET', url, null, { history: false });
 				if (res.status === 'success') {
 					done++;
 				} else {
@@ -92,22 +79,19 @@ export default class InstallWizard {
 			}
 		}
 
-		this.#finalize(allOk, done, total);
+		if (spinner) spinner.style.display = 'none';
+		this.#finalize(allOk, done, total, lastFile);
 	}
 
-	#finalize(allOk, done, total) {
-		if (allOk) {
-			this.#updateChip('success', null, total, total);
-		} else {
-			this.#updateChip('error', null, done, total);
-			if (this.#installBtn) this.#installBtn.disabled = false;
-		}
+	#finalize(allOk, done, total, lastFile) {
+		this.#updateChip(allOk ? 'success' : 'error', lastFile, done, total);
+		if (!allOk) this.#installBtn.disabled = false;
 
-		const targetId = allOk ? 'steps-done' : 'steps-fail';
-		const targetUrl = document.getElementById(targetId)?.dataset.doneUrl;
-
+		const targetUrl = allOk ? this.#installBtn.dataset.url : this.#installBtn.dataset.urlError;
 		if (targetUrl) {
-			this.#naja.makeRequest('GET', targetUrl, null, { history: false });
+			this.#naja.makeRequest('GET', targetUrl, null, { history: false }).then(() => {
+				if (!allOk) this.#updateChip('error', lastFile, done, total);
+			});
 		}
 	}
 }

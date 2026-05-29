@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\UI\Install;
 
+use App\Core\Permission\Users\UsersRolesEntity;
 use App\UI\Backend\Sign\SignUpFactory;
 use App\UI\Install\Factory\DatabaseFactory;
 use App\UI\Install\Factory\WebsiteFactory;
+use Dibi\Connection;
 use Drago\Application\UI\Alert;
 use Drago\Localization\TranslatorAdapter;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
-use Throwable;
 
 
 /**
@@ -22,8 +23,8 @@ final class InstallPresenter extends Presenter
 {
 	use TranslatorAdapter;
 
-
 	public function __construct(
+		private readonly Connection $connection,
 		private readonly Steps $steps,
 		private readonly DatabaseFactory $databaseFactory,
 		private readonly WebsiteFactory $websiteFactory,
@@ -114,6 +115,10 @@ final class InstallPresenter extends Presenter
 		$form = $this->userSingUpFactory->create();
 		$form->setTranslator($this->translator);
 		$form->onSuccess[] = function () {
+			$this->connection->insert(UsersRolesEntity::Table, [
+				UsersRolesEntity::ColumnUserId => 1,
+				UsersRolesEntity::ColumnRoleId => 1,
+			])->execute();
 			$this->steps->setStep(5);
 			$this->flashMessage('Account administrator registration successful.', Alert::Success);
 		};

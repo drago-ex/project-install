@@ -6,7 +6,6 @@ namespace App\UI\Install\Factory;
 
 use App\UI\Install\Steps;
 use dibi;
-use Drago\Parameters\Parameters;
 use Nette\Application\UI\Form;
 use Nette\DI\Config\Adapters\NeonAdapter;
 use Throwable;

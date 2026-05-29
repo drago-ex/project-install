@@ -6,12 +6,13 @@
 	"require": {
 		"php": ">=8.3 <9",
 		"drago-ex/database": "^2.0",
-		"drago-ex/application": "dev-master as 1.999",
+		"drago-ex/application": "dev-master",
 		"drago-ex/form": "dev-main",
 		"drago-ex/utils": "^1.0",
 		"drago-ex/translator": "^2.0",
-	  	"drago-ex/project-auth": "dev-main",
-	  	"drago-ex/project-settings": "dev-main"
+		"drago-ex/project-auth": "dev-main",
+		"drago-ex/project-settings": "dev-main",
+		"drago-ex/project-permission": "dev-main"
 	},
 	"extra": {
 		"drago-project": {

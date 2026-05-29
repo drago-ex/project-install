@@ -5,17 +5,23 @@
 	"license": ["MIT"],
 	"require": {
 		"php": ">=8.3 <9",
-		"drago-ex/database": "^2.0",
-		"drago-ex/application": "dev-master",
-		"drago-ex/form": "dev-main",
-		"drago-ex/utils": "^1.0",
-		"drago-ex/translator": "^2.0",
-		"drago-ex/project-auth": "dev-main",
-		"drago-ex/project-settings": "dev-main",
-		"drago-ex/project-permission": "dev-main"
+		"drago-ex/bootstrap": "dev-master as  1.9999",
+		"drago-ex/translator": "dev-master as  2.9999",
+		"drago-ex/project-permission": "dev-main as 1.999",
+		"drago-ex/permission": "dev-main as 1.9999",
+		"drago-ex/datagrid": "dev-main as 1.9999",
+		"drago-ex/migration": "@dev",
+		"drago-ex/utils": "dev-master as 1.999",
+		"drago-ex/application": "dev-master as 1.999",
+		"drago-ex/component": "dev-main as 1.999",
+		"drago-ex/form": "dev-main as 1.999",
+		"drago-ex/database": "dev-master as 2.9999",
+		"drago-ex/project-auth": "dev-main as 1.999",
+		"drago-ex/project-settings": "dev-main as 1.999"
 	},
 	"extra": {
 		"drago-project": {
+			"allow-library-install": true,
 			"install": {
 				"copy": {
 					"resources/app": "app",

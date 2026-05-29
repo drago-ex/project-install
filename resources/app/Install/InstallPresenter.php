@@ -36,7 +36,7 @@ final class InstallPresenter extends Presenter
 	}
 
 
-	/** Prepare the installation step before rendering. @throws Throwable */
+	/** Prepare the installation step before rendering. */
 	protected function beforeRender(): void
 	{
 		parent::beforeRender();
@@ -72,15 +72,14 @@ final class InstallPresenter extends Presenter
 	public function handleMigrationsDone(): void
 	{
 		$this->steps->setStep(3);
-		$this->flashMessage('Instalace proběhla úspěšně!', Alert::Success);
-		//$this->redrawControl('install');
+		$this->flashMessage('Database installation was successful!', Alert::Success);
 	}
 
 
 	/** Handle migration failure. */
 	public function handleMigrationsFail(): void
 	{
-		$this->flashMessage('Instalace selhala.', Alert::Danger);
+		$this->flashMessage('Database installation failed', Alert::Danger);
 	}
 
 
@@ -132,7 +131,7 @@ final class InstallPresenter extends Presenter
 	{
 		file_put_contents(
 			$this->templatePath . '/installed.lock',
-			'installed=' . date('Y-m-d H:i:s') . "\n" . 'version=1.0.0',
+			'installed: ' . date('Y-m-d H:i:s') . "\n" . 'version: 1.0.0',
 		);
 		$this->redirectUrl('/admin');
 	}

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Install;
 
 use App\Core\Permission\Users\UsersRolesEntity;
-use App\UI\Backend\Sign\SignUpFactory;
 use App\Install\Factory\DatabaseFactory;
 use App\Install\Factory\WebsiteFactory;
+use App\UI\Backend\Sign\SignUpFactory;
 use Dibi\Connection;
 use Drago\Application\UI\Alert;
 use Drago\Localization\TranslatorAdapter;
@@ -132,7 +132,7 @@ final class InstallPresenter extends Presenter
 	{
 		file_put_contents(
 			$this->templatePath . '/installed.lock',
-			'installed=' . date('Y-m-d H:i:s') . "\n" . 'version=1.0.0'
+			'installed=' . date('Y-m-d H:i:s') . "\n" . 'version=1.0.0',
 		);
 		$this->redirectUrl('/admin');
 	}

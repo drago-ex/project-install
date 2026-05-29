@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Install\Factory;
+namespace App\Install\Factory;
 
-use App\UI\Install\Steps;
+use App\Install\Steps;
 use dibi;
 use Nette\Application\UI\Form;
 use Nette\DI\Config\Adapters\NeonAdapter;

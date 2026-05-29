@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Install\Factory;
+namespace App\Install\Factory;
 
 use Drago\Form\ExtraForms;
 

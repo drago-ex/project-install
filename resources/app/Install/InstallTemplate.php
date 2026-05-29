@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Install;
+namespace App\Install;
 
-use App\UI\BaseTemplate;
+use Drago\Application\UI\ExtraTemplate;
 
 
 /** Template for the installation process. */
-class InstallTemplate extends BaseTemplate
+class InstallTemplate extends ExtraTemplate
 {
+	public string $lang;
 	public int $step;
 
 	/** @var list<string> */

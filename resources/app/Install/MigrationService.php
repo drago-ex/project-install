@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Install;
+namespace App\Install;
 
 use Dibi\Connection;
 use InvalidArgumentException;

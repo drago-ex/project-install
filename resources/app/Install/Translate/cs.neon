@@ -32,13 +32,11 @@
 "Please enter basic information for the website.": "Zadejte prosím základní informace o Vašem webu."
 "Sign up": "Registrace"
 "Administrator account registration.": "Vytvoření účtu administrátora."
-"Installation is complete": "Instalace je dokončena"
-"The installation of the system is almost over, now it is necessary to remove the installation packages in order for the system to boot properly.":
-	"Instalace systému je téměř hotová. Nyní je nutné odstranit instalační soubory, aby mohl systém bezpečně naběhnout."
-
-"Please follow the instructions below.": "Postupujte prosím podle následujících pokynů."
+"Installation successfully completed": "Instalace byla úspěšně dokončena"
+"The system has been successfully installed and configured. Click the button below to finalize the process and proceed to the administration area.":
+	"Systém byl úspěšně nainstalován a zkonfigurován. Kliknutím na tlačítko níže dokončíte proces a budete přesměrováni do administrace."
 "Delete the following files:": "Odstraňte tyto soubory a složky:"
-"Entering administration": "Přejít do administrace"
+"Go to administration": "Přejít do administrace"
 
 # component database
 "Database server": "Databázový server"

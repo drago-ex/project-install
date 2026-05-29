@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Install\Factory;
+namespace App\Install\Factory;
 
 use App\Core\Settings\SettingsEntity;
-use App\UI\Install\Steps;
+use App\Install\Steps;
 use Dibi\Connection;
 use Dibi\Exception;
 use Nette\Application\UI\Form;

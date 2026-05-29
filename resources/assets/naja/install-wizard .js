@@ -14,7 +14,7 @@ export default class InstallWizard {
 				.catch(() => { btn.disabled = false; });
 		});
 
-		this.#initButton('installBtn', async (btn) => {
+		this.#initButton('install-btn', async (btn) => {
 			await this.#runInstall(btn);
 		});
 	}

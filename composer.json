@@ -1,0 +1,41 @@
+{
+	"name": "drago-ex/project-install",
+	"type": "drago-project-resource",
+	"description": "Application installation package.",
+	"license": ["MIT"],
+	"require": {
+		"php": ">=8.3 <9",
+		"drago-ex/database": "^2.0",
+		"drago-ex/application": "dev-master as 1.999",
+		"drago-ex/form": "dev-main",
+		"drago-ex/utils": "^1.0",
+		"drago-ex/translator": "^2.0",
+	  	"drago-ex/project-auth": "dev-main",
+	  	"drago-ex/project-settings": "dev-main"
+	},
+	"extra": {
+		"drago-project": {
+			"install": {
+				"copy": {
+					"resources/app": "app",
+					"resources/assets": "assets"
+				}
+			}
+		}
+	},
+	"require-dev": {
+		"phpstan/phpstan-nette": "^2.0",
+		"drago-ex/project-installer": "@dev"
+	},
+	"scripts": {
+		"phpstan": "phpstan analyse",
+		"post-install-cmd": [
+			"drago-install --dev",
+			"drago-clean"
+		],
+		"post-update-cmd": [
+			"drago-install --dev",
+			"drago-clean"
+		]
+	}
+}

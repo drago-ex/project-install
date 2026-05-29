@@ -11,5 +11,7 @@ use App\UI\BaseTemplate;
 class InstallTemplate extends BaseTemplate
 {
 	public int $step;
+
+	/** @var list<string> */
 	public array $migrationFiles = [];
 }

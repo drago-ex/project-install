@@ -11,6 +11,7 @@ services:
 
 	# database migrations
 	- App\UI\Install\MigrationService(migrationsPath: %appDir%/../db)
+	- App\UI\Install\Factory\DatabaseFactory(configPath: %appDir%)
 
 
 # application settings

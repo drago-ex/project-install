@@ -17,10 +17,10 @@
 	<header class="fixed-top bg-light header">
 		<div class="d-flex">
 			<div class="pt-2 ps-3 pe-3 flex-grow-1">
-				<a n:href=":Install:Install:" class="text-decoration-none font-weight-bold">Netis</a>
+				<a n:href="Install:" class="text-decoration-none fw-semibold">Netis</a>
 			</div>
 			<div class="pt-2 ps-3 pe-3">
-				<p class="m-0 font-weight-bold">{_'Installation step'}
+				<p class="m-0 fw-semibold">{_'Installation step'}
 					<span class="badge bg-secondary">{$step} &#47; 5</span>
 				</p>
 			</div>
@@ -28,21 +28,21 @@
 	</header>
 
 	{* flash message *}
-	<div n:foreach="$flashes as $flash" class="alert alert-primary alert-dismissible fade show rounded-0 font-weight-bold" role="alert">
-		<div class="container">{$flash->message|translate}
-			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	{foreach $flashes as $flash}
+		{var string $flasType = $flash->type ? 'alert-' . $flash->type}
+		<div n:class="'fw-semibold alert mt-2 fade show border-0 rounded-0', $flasType" role="alert">
+			<div class="text-end">{_$flash->message}</div>
 		</div>
-	</div>
+	{/foreach}
 
-	{* steps icons *}
-	{switch $step}
-		{case 0}{var string $ico = 'fa-question'}
-		{case 1}{var string $ico = 'fa-server'}
-		{case 2}{var string $ico = 'fa-database'}
-		{case 3}{var string $ico = 'fa-globe'}
-		{case 4}{var string $ico = 'fa-user-plus'}
-		{case 5}{var string $ico = 'fa-check'}
-	{/switch}
+	{do $icons = [
+		0 => 'fa-question',
+		1 => 'fa-server',
+		2 => 'fa-database',
+		3 => 'fa-globe',
+		4 => 'fa-user-plus',
+		5 => 'fa-check',
+	]}
 
 	{* content *}
 	<main class="container main">
@@ -52,7 +52,7 @@
 			</div>
 			<div class="col-md-6">
 				<div class="steps-ico">
-					<i class="fa-solid {$ico}" aria-hidden="true"></i>
+					<i class="fa-solid {$icons[$step]}" aria-hidden="true"></i>
 				</div>
 			</div>
 		</div>

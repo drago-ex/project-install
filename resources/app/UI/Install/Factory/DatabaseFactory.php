@@ -18,7 +18,7 @@ final readonly class DatabaseFactory
 	public function __construct(
 		private Steps $steps,
 		private NeonAdapter $neonAdapter,
-		private Parameters $dirs,
+		private string $configPath,
 	) {
 	}
 
@@ -69,7 +69,7 @@ final readonly class DatabaseFactory
 				];
 
 				$content = $this->neonAdapter->dump($arr);
-				$filePath = $this->dirs->appDir . '/Core/db.neon';
+				$filePath = $this->configPath . '/db.neon';
 				if (file_put_contents($filePath, $content) === false) {
 					throw new \RuntimeException('Cannot write to file: ' . $filePath);
 				}

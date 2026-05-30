@@ -28,7 +28,7 @@
 			"allow-library-install": true,
 			"install": {
 				"copy": {
-					"resources/app/install": "app/install",
+					"resources/app/Install": "app/Install",
 					"resources/assets": "assets"
 				},
 				"replace": {

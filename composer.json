@@ -24,6 +24,7 @@
 	},
 	"extra": {
 		"drago-project": {
+			"skip": false,
 			"allow-library-install": true,
 			"install": {
 				"copy": {

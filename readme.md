@@ -16,7 +16,10 @@ Application installation package.
 - Drago Project core packages
 
 ## Installation
-Warning, it overwrites files in the project! which are listed in the composer in the replace section.
 ```bash
-composer require drago-ex/project-auth
+composer require drago-ex/project-install
 ```
+
+## Project files
+The package has `extra.drago-project.skip` set to `false`, so `drago-install` copies or replaces the configured files automatically.
+If `skip` is set to `true`, copy those files manually according to the `copy` and `replace` sections in `composer.json`.

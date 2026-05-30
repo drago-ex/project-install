@@ -27,8 +27,12 @@
 			"allow-library-install": true,
 			"install": {
 				"copy": {
-					"resources/app": "app",
+					"resources/app/install": "app/install",
 					"resources/assets": "assets"
+				},
+				"replace": {
+					"resources/bootstrap.php": "app",
+					"resources/www": "www"
 				}
 			}
 		}

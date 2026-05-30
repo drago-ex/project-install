@@ -57,6 +57,7 @@ class ApplicationRunner
 	}
 
 
+	/** Recreate the lock file if the application is already installed. */
 	private function recreateLockIfInstalled(Container $container): bool
 	{
 		try {

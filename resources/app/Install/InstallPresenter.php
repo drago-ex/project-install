@@ -27,7 +27,7 @@ final class InstallPresenter extends Presenter
 	use TranslatorAdapter;
 
 	public function __construct(
-		private readonly string $templatePath,
+		private readonly string $tempPath,
 		private readonly Connection $connection,
 		private readonly Steps $steps,
 		private readonly DatabaseFactory $databaseFactory,
@@ -138,7 +138,7 @@ final class InstallPresenter extends Presenter
 			SettingsEntity::ColumnValue => '1',
 		])->execute();
 
-		InstallLock::create(dirname($this->templatePath));
+		InstallLock::create(dirname($this->tempPath));
 		$this->redirectUrl('/admin');
 	}
 }

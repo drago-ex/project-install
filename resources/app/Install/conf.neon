@@ -11,7 +11,7 @@ services:
 	- App\Install\Factory\DatabaseFactory(configPath: %appDir%)
 	- App\UI\Backend\Sign\Factory
 	- App\UI\Backend\Sign\SignUpFactory
-	- App\Install\InstallPresenter(templatePath: %tempDir%)
+	- App\Install\InstallPresenter(tempPath: %tempDir%)
 
 
 routing:

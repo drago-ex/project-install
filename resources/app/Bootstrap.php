@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+namespace App;
 
 use Drago\Bootstrap\ExtraConfigurator;
 use Nette\DI\Container;
+use Throwable;
 
 
 /** The Bootstrap class configures the application. */

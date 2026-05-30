@@ -19,6 +19,9 @@
 		"drago-ex/project-auth": "dev-main as 1.999",
 		"drago-ex/project-settings": "dev-main as 1.999"
 	},
+	"autoload": {
+		"classmap": ["src/"]
+	},
 	"extra": {
 		"drago-project": {
 			"allow-library-install": true,

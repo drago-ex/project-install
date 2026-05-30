@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Install;
 
 use App\Core\Permission\Users\UsersRolesEntity;
+use App\Core\Settings\SettingsEntity;
 use App\Install\Factory\DatabaseFactory;
 use App\Install\Factory\WebsiteFactory;
 use App\UI\Backend\Sign\SignUpFactory;
 use Dibi\Connection;
+use Dibi\Exception;
 use Drago\Application\UI\Alert;
 use Drago\Localization\TranslatorAdapter;
+use Install\InstallLock;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
 
@@ -127,12 +130,15 @@ final class InstallPresenter extends Presenter
 	}
 
 
+	/** @throws Exception */
 	public function handleFinish(): void
 	{
-		file_put_contents(
-			$this->templatePath . '/installed.lock',
-			'installed: ' . date('Y-m-d H:i:s') . "\n" . 'version: 1.0.0',
-		);
+		$this->connection->insert(SettingsEntity::Table, [
+			SettingsEntity::ColumnName => 'installed',
+			SettingsEntity::ColumnValue => '1',
+		])->execute();
+
+		InstallLock::create(dirname($this->templatePath));
 		$this->redirectUrl('/admin');
 	}
 }

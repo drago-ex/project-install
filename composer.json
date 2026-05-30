@@ -31,7 +31,7 @@
 					"resources/assets": "assets"
 				},
 				"replace": {
-					"resources/bootstrap.php": "app",
+					"resources/Bootstrap.php": "app",
 					"resources/www": "www"
 				}
 			}

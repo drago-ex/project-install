@@ -72,14 +72,17 @@ export default class InstallWizard {
 
 			try {
 				const res = await this.#naja.makeRequest('GET', url, null, { history: false });
+				console.log(`Migration response for ${file}:`, res);
+
 				if (res.status === 'success') {
 					done++;
 				} else {
 					allOk = false;
 					break;
 				}
-			} catch {
+			} catch (e) {
 				allOk = false;
+				console.error(`Migration request failed for ${file}:`, e);
 				break;
 			}
 		}

@@ -8,6 +8,7 @@ use Dibi\Connection;
 use InvalidArgumentException;
 use RuntimeException;
 use Throwable;
+use Tracy\Debugger;
 
 
 final readonly class MigrationService
@@ -70,6 +71,7 @@ final readonly class MigrationService
 			];
 
 		} catch (Throwable $t) {
+			Debugger::log($t);
 			return [
 				'file' => $file,
 				'status' => 'error',

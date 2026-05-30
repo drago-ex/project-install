@@ -64,10 +64,9 @@ final class InstallPresenter extends Presenter
 
 
 	/** Handle migration run. */
-	public function handleRunMigration(): void
+	public function handleRunMigration(string $file): void
 	{
-		$file = $this->getHttpRequest()->getQuery('file');
-		$this->sendJson($this->migrationService->run((string) $file));
+		$this->sendJson($this->migrationService->run($file));
 	}
 
 

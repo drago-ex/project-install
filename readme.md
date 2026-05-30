@@ -16,6 +16,7 @@ Application installation package.
 - Drago Project core packages
 
 ## Installation
+Warning, it overwrites files in the project! which are listed in the composer in the replace section.
 ```bash
 composer require drago-ex/project-auth
 ```

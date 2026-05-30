@@ -7,7 +7,7 @@ services:
 	- Nette\DI\Config\Adapters\NeonAdapter
 
 	# database migrations
-	- App\Install\MigrationService(migrationsPath: %appDir%/../db)
+	- App\Install\MigrationService(migrationsPath: %appDir%/../migrations)
 	- App\Install\Factory\DatabaseFactory(configPath: %appDir%)
 	- App\UI\Backend\Sign\Factory
 	- App\UI\Backend\Sign\SignUpFactory

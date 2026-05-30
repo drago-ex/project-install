@@ -5,19 +5,19 @@
 	"license": ["MIT"],
 	"require": {
 		"php": ">=8.3 <9",
-		"drago-ex/bootstrap": "dev-master as  1.9999",
-		"drago-ex/translator": "dev-master as  2.9999",
-		"drago-ex/project-permission": "dev-main as 1.999",
-		"drago-ex/permission": "dev-main as 1.9999",
-		"drago-ex/datagrid": "dev-main as 1.9999",
-		"drago-ex/migration": "@dev",
-		"drago-ex/utils": "dev-master as 1.999",
-		"drago-ex/application": "dev-master as 1.999",
-		"drago-ex/component": "dev-main as 1.999",
-		"drago-ex/form": "dev-main as 1.999",
-		"drago-ex/database": "dev-master as 2.9999",
-		"drago-ex/project-auth": "dev-main as 1.999",
-		"drago-ex/project-settings": "dev-main as 1.999"
+		"drago-ex/bootstrap": "^2.0",
+		"drago-ex/translator": "^3.0",
+		"drago-ex/project-permission": "dev-main",
+		"drago-ex/permission": "^2.0",
+		"drago-ex/datagrid": "dev-main",
+		"drago-ex/migration": "^2.0",
+		"drago-ex/utils": "^2.0",
+		"drago-ex/application": "^2.0",
+		"drago-ex/component": "^2.0",
+		"drago-ex/form": "^2.0",
+		"drago-ex/database": "^3.0",
+		"drago-ex/project-auth": "^2.0",
+		"drago-ex/project-settings": "^1.0"
 	},
 	"autoload": {
 		"classmap": ["src/"]

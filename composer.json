@@ -33,6 +33,7 @@
 				},
 				"replace": {
 					"resources/app/Bootstrap.php": "app",
+					"resources/app/app.neon": "app",
 					"resources/www": "www"
 				}
 			}

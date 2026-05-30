@@ -56,6 +56,11 @@ export default class InstallWizard {
 		let allOk = true;
 		let lastFile = null;
 
+		if (total === 0) {
+			this.#finalize(false, done, total, lastFile);
+			return;
+		}
+
 		const spinner = document.querySelector('.spinner');
 		if (spinner) spinner.style.display = 'block';
 

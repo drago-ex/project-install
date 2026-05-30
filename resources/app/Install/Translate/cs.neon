@@ -21,7 +21,7 @@
 "Before installing the database, please verify that your database server has an empty database or uses other table prefixes.":
 	"Před instalací se prosím ujistěte, že je cílová databáze prázdná, nebo zda používáte odlišné prefixy tabulek."
 
-"Database installation was successful!": "Instalace databáze proběhla úspěšně!"
+"Database installation was successful.": "Instalace databáze proběhla úspěšně!"
 "Database installation failed.": "Instalace databáze selhala."
 
 "If the table names match your table in the database, you will not be able to upload the database.":
@@ -55,7 +55,6 @@
 
 # component tables
 "Upload database": "Nahrát databázi"
-"Database installation was successful.": "Instalace databáze probíhla úspěšně."
 "Some table names already exist in the database.": "Některé tabulky v databázi již existují."
 
 # component website

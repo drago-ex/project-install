@@ -75,14 +75,14 @@ final class InstallPresenter extends Presenter
 	public function handleMigrationsDone(): void
 	{
 		$this->steps->setStep(3);
-		$this->flashMessage('Database installation was successful!', Alert::Success);
+		$this->flashMessage('Database installation was successful.', Alert::Success);
 	}
 
 
 	/** Handle migration failure. */
 	public function handleMigrationsFail(): void
 	{
-		$this->flashMessage('Database installation failed', Alert::Danger);
+		$this->flashMessage('Database installation failed.', Alert::Danger);
 	}
 
 

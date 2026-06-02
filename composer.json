@@ -7,7 +7,6 @@
 		"php": ">=8.3 <9",
 		"drago-ex/bootstrap": "^2.0",
 		"drago-ex/translator": "^3.0",
-		"drago-ex/project-permission": "dev-main",
 		"drago-ex/permission": "^2.0",
 		"drago-ex/datagrid": "dev-main",
 		"drago-ex/migration": "^2.0",
@@ -15,8 +14,16 @@
 		"drago-ex/component": "^2.0",
 		"drago-ex/form": "^2.0",
 		"drago-ex/database": "^3.0",
+		"drago-ex/datagrid": "dev-main"
+		"drago-ex/project-docker": "^2.0",
+		"drago-ex/project-docker-db": "^2.0",
+		"drago-ex/project-front": "^2.0",
 		"drago-ex/project-auth": "^2.0",
-		"drago-ex/project-settings": "^1.0"
+		"drago-ex/project-backend": "^2.0",
+		"drago-ex/project-backend-ui": "^2.0",
+		"drago-ex/project-permission": "dev-main",
+		"drago-ex/project-settings": "^1.0",
+		"drago-ex/project-preset": "dev-main"
 	},
 	"autoload": {
 		"classmap": ["src/"]
@@ -24,6 +31,8 @@
 	"extra": {
 		"drago-project": {
 			"allow-library-install": true,
+			"install-once": true,
+			"priority": 400,
 			"install": {
 				"copy": {
 					"resources/app/Install": "app/Install",

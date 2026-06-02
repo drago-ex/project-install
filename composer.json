@@ -14,7 +14,6 @@
 		"drago-ex/component": "^2.0",
 		"drago-ex/form": "^2.0",
 		"drago-ex/database": "^3.0",
-		"drago-ex/datagrid": "dev-main",
 		"drago-ex/project-docker": "^2.0",
 		"drago-ex/project-docker-db": "^2.0",
 		"drago-ex/project-front": "^2.0",

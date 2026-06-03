@@ -30,13 +30,13 @@
 	"extra": {
 		"drago-project": {
 			"allow-library-install": true,
-			"install-once": true,
-			"priority": 400,
 			"install": {
 				"copy": {
 					"resources/app/Install": "app/Install",
 					"resources/assets": "assets"
 				},
+				"replace-once": true,
+				"replace-priority": 400,
 				"replace": {
 					"resources/app/Bootstrap.php": "app",
 					"resources/app/app.neon": "app",
@@ -47,7 +47,7 @@
 	},
 	"require-dev": {
 		"phpstan/phpstan-nette": "^2.0",
-		"drago-ex/project-installer": "@dev"
+		"drago-ex/project-tools": "@dev"
 	},
 	"scripts": {
 		"phpstan": "phpstan analyse",

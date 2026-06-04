@@ -9,6 +9,8 @@ services:
 	# database migrations
 	- App\Install\MigrationService(migrationsPath: %appDir%/../migrations)
 	- App\Install\Factory\DatabaseFactory(configPath: %appDir%)
+	- App\Install\Factory\DatabaseFactory
+	- App\Install\Factory\WebsiteFactory
 	- App\UI\Backend\Sign\Factory
 	- App\UI\Backend\Sign\SignUpFactory
 	- App\Install\InstallPresenter(tempPath: %tempDir%)
@@ -30,16 +32,6 @@ application:
 # application extensions
 extensions:
 	translator: Drago\Localization\DI\TranslatorExtension(%appDir%, %tempDir%)
-
-
-# automatic class registration
-search:
-	-
-		in: %appDir%/Install/Factory
-		classes:
-			- *Factory
-			- *Control
-			- *Repository
 
 
 # nette asset building

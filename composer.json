@@ -1,6 +1,6 @@
 {
 	"name": "drago-ex/project-install",
-	"type": "drago-project-resource",
+	"type": "drago-tools-resource",
 	"description": "Application installation package.",
 	"license": ["MIT"],
 	"require": {
@@ -28,8 +28,7 @@
 		"classmap": ["src/"]
 	},
 	"extra": {
-		"drago-project": {
-			"allow-library-install": true,
+		"drago-tools": {
 			"install": {
 				"copy": {
 					"resources/app/Install": "app/Install",

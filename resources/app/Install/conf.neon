@@ -9,7 +9,6 @@ services:
 	# database migrations
 	- App\Install\MigrationService(migrationsPath: %appDir%/../migrations)
 	- App\Install\Factory\DatabaseFactory(configPath: %appDir%)
-	- App\Install\Factory\DatabaseFactory
 	- App\Install\Factory\WebsiteFactory
 	- App\UI\Backend\Sign\Factory
 	- App\UI\Backend\Sign\SignUpFactory

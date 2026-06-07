@@ -8,7 +8,7 @@
 		"drago-ex/bootstrap": "^2.0",
 		"drago-ex/translator": "^3.0",
 		"drago-ex/permission": "^2.0",
-		"drago-ex/datagrid": "dev-main",
+		"drago-ex/datagrid": "^1.0",
 		"drago-ex/migration": "^2.0",
 		"drago-ex/application": "^2.0",
 		"drago-ex/component": "^2.0",
@@ -46,7 +46,7 @@
 	},
 	"require-dev": {
 		"phpstan/phpstan-nette": "^2.0",
-		"drago-ex/project-tools": "@dev"
+		"drago-ex/project-tools": "^1.0"
 	},
 	"scripts": {
 		"phpstan": "phpstan analyse",

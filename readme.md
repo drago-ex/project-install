@@ -26,5 +26,5 @@ which must be installed in your project. Without it, copy the files manually acc
 in this package's `composer.json`. To skip this package, set `"skip": true` under
 `extra.drago-tools.packages.<package-name>` in your root `composer.json`.
 
-> ⚠️ This package uses the `replace` section, which means some files will be **overwritten if they already exist**.
-> Avoid manual edits to those files — use the `skip` option if you need to manage them yourself.
+> Warning: This package uses the `replace` section, which means some files will be **overwritten if they already exist**.
+> Avoid manual edits to those files; use the `skip` option if you need to manage them yourself.

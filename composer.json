@@ -20,9 +20,6 @@
 		"drago-ex/project-backend-ui": "^2.0",
 		"drago-ex/project-settings": "^1.0"
 	},
-	"autoload": {
-		"classmap": ["src/"]
-	},
 	"extra": {
 		"drago-tools": {
 			"install": {

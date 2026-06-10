@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Install\Factory;
 
-use App\Core\Settings\SettingsEntity;
 use App\Install\Steps;
+use App\UI\Backend\Settings\SettingsEntity;
 use Dibi\Connection;
 use Dibi\Exception;
 use Nette\Application\UI\Form;

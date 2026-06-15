@@ -10,8 +10,8 @@ services:
 	- App\Install\MigrationService(migrationsPath: %appDir%/../migrations)
 	- App\Install\Factory\DatabaseFactory(configPath: %appDir%)
 	- App\Install\Factory\WebsiteFactory
-	- App\UI\Backend\Sign\Factory
-	- App\UI\Backend\Sign\SignUpFactory
+	- App\UI\Sign\Factory
+	- App\UI\Sign\SignUpFactory
 	- App\Install\InstallPresenter(tempPath: %tempDir%)
 
 

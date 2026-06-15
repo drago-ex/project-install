@@ -8,7 +8,7 @@ use App\Core\Settings\SettingsEntity;
 use App\Install\Factory\DatabaseFactory;
 use App\Install\Factory\WebsiteFactory;
 use App\UI\Backend\Permission\Component\Users\UsersRolesEntity;
-use App\UI\Backend\Sign\SignUpFactory;
+use App\UI\Sign\SignUpFactory;
 use Dibi\Connection;
 use Dibi\Exception;
 use Drago\Application\UI\Alert;

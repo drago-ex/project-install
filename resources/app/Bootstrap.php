@@ -9,7 +9,6 @@ use Nette\DI\Container;
 use Throwable;
 
 
-/** The Bootstrap class configures the application. */
 final class Bootstrap
 {
 	private ExtraConfigurator $configurator;
@@ -20,7 +19,7 @@ final class Bootstrap
 	{
 		$this->rootDir = dirname(__DIR__);
 		$this->configurator = new ExtraConfigurator;
-		$this->configurator->setTempDirectory($this->rootDir . '/var');
+		$this->configurator->setTempDirectory($this->rootDir . '/temp');
 	}
 
 
@@ -30,7 +29,7 @@ final class Bootstrap
 			$this->configurator->setDebugMode(true);
 		}
 
-		$this->configurator->enableTracy($this->rootDir . '/var/log');
+		$this->configurator->enableTracy($this->rootDir . '/log');
 	}
 
 
@@ -40,7 +39,7 @@ final class Bootstrap
 		$this->initializeEnvironment();
 		$this->configurator->createRobotLoader()
 			->addDirectory(__DIR__)
-			->excludeDirectory(__DIR__ . '/Install')
+			->excludeDirectory(__DIR__ . '/Presentation/Install')
 			->register();
 
 		$this->setupContainer();
@@ -53,10 +52,10 @@ final class Bootstrap
 	{
 		$this->initializeEnvironment();
 		$this->configurator->createRobotLoader()
-			->addDirectory(__DIR__ . '/Install')
+			->addDirectory(__DIR__ . '/Presentation/Install')
 			->register();
 
-		$this->configurator->addFindConfig(__DIR__ . '/Install', 'Translate');
+		$this->configurator->addFindConfig(__DIR__ . '/Presentation/Install', 'Translate');
 		$this->configurator->addConfig(__DIR__ . '/db.neon');
 		return $this->configurator->createContainer();
 	}
@@ -65,8 +64,8 @@ final class Bootstrap
 	/** @throws Throwable */
 	public function bootConsoleApplication(): Container
 	{
-		$this->configurator->setDebugMode(false);
 		$this->initializeEnvironment();
+		$this->configurator->setDebugMode(false);
 		$this->setupContainer();
 		return $this->configurator->createContainer();
 	}

@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Install\Factory;
+namespace App\Presentation\Install\Factory;
 
-use App\Install\Steps;
+use App\Presentation\Install\Steps;
 use dibi;
 use Nette\Application\UI\Form;
 use Nette\DI\Config\Adapters\NeonAdapter;
 use Throwable;
 
 
-/** Database server settings configuration and handling. */
 final readonly class DatabaseFactory
 {
 	public function __construct(
@@ -22,7 +21,6 @@ final readonly class DatabaseFactory
 	}
 
 
-	/** Creates the form for database connection settings. */
 	public function create(): Form
 	{
 		$form = new Form;
@@ -48,7 +46,6 @@ final readonly class DatabaseFactory
 	}
 
 
-	/** Handles the success of the database form submission. */
 	public function success(Form $form, DatabaseValues $data): void
 	{
 		try {

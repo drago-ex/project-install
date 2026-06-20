@@ -1,4 +1,4 @@
-{templateType App\Install\InstallTemplate}
+{templateType App\Presentation\Install\InstallTemplate}
 
 {* subtitle sites *}
 {block title}{_'System installation'}{/block}
@@ -30,7 +30,7 @@
 	{* database server settings *}
 	<h1 class="display-4 mb-5">{_'Database settings'}</h1>
 	<p>{_'If there is a problem with database server authentication, please contact your web hosting vendor to verify the correctness of the data.'}</p>
-	{embed '../Core/Widget/@form.latte', name: 'database', class: 'ajax mt-5'}
+	{embed '../Accessory/Widget/@form.latte', name: 'database', class: 'ajax mt-5'}
 		{block form}
 			{include input, name: 'host', columns: 6}
 			{include input, name: 'user', columns: 6}
@@ -87,7 +87,7 @@
 	<h1 class="display-4 mb-5">{_'Site name and description'}</h1>
 
 	<p>{_'Please enter basic information for the website.'}</p>
-	{embed '../Core/Widget/@form.latte', name: 'website', class: 'ajax mt-5'}
+	{embed '../Accessory/Widget/@form.latte', name: 'website', class: 'ajax mt-5'}
 		{block form}
 			{include input, name: 'website', columns: 6}
 			{include input, name: 'description', columns: 6}
@@ -103,7 +103,7 @@
 	{* add administrator account *}
 	<h1 class="display-4 mb-5">{_'Registration'}</h1>
 	<p>{_'Administrator account registration.'}</p>
-	{embed '../Core/Widget/@form.latte', name: 'account', class: 'ajax mt-5'}
+	{embed '../Accessory/Widget/@form.latte', name: 'account', class: 'ajax mt-5'}
 		{block form}
 			{include input, name: 'username', columns: 6}
 			{include input, name: 'email', columns: 6}

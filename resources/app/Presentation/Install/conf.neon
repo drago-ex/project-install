@@ -3,16 +3,16 @@ services:
 	# cache for install steps
 	install.cache: {class: Nette\Caching\Cache, arguments: [@Nette\Caching\IStorage, 'Install.CacheSteps'], autowired: no}
 
-	- App\Install\Steps(@install.cache)
+	- App\Presentation\Install\Steps(@install.cache)
 	- Nette\DI\Config\Adapters\NeonAdapter
 
 	# database migrations
-	- App\Install\MigrationService(migrationsPath: %appDir%/../migrations)
-	- App\Install\Factory\DatabaseFactory(configPath: %appDir%)
-	- App\Install\Factory\WebsiteFactory
-	- App\UI\Sign\Factory
-	- App\UI\Sign\SignUpFactory
-	- App\Install\InstallPresenter(tempPath: %tempDir%)
+	- App\Presentation\Install\MigrationService(migrationsPath: %appDir%/../migrations)
+	- App\Presentation\Install\Factory\DatabaseFactory(configPath: %appDir%)
+	- App\Presentation\Install\Factory\WebsiteFactory
+	- App\Presentation\Sign\Factory
+	- App\Presentation\Sign\SignUpFactory
+	- App\Presentation\Install\InstallPresenter(tempPath: %tempDir%)
 
 
 routing:

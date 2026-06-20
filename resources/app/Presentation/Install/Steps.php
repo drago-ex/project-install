@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Install;
+namespace App\Presentation\Install;
 
 use Nette\Caching\Cache;
 use Throwable;
 
 
-/** Saving installation steps into cache. */
 class Steps
 {
 	private const string CacheKey = 'Install step';
@@ -20,7 +19,6 @@ class Steps
 	}
 
 
-	/** Save the current installation step to cache. */
 	public function setStep(int $step): void
 	{
 		try {
@@ -31,7 +29,6 @@ class Steps
 	}
 
 
-	/** Get the current installation step from cache. */
 	public function getStep(): ?int
 	{
 		try {

@@ -27,7 +27,7 @@
 		"drago-tools": {
 			"install": {
 				"copy": {
-					"resources/app/Install": "app/Install",
+					"resources/app/Presentation/Install": "app/Presentation/Install",
 					"resources/assets": "assets"
 				},
 				"replace-once": true,

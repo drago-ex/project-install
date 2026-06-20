@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Install;
+namespace App\Presentation\Install;
 
 use App\Core\Settings\SettingsEntity;
-use App\Install\Factory\DatabaseFactory;
-use App\Install\Factory\WebsiteFactory;
-use App\UI\Backend\Permission\Component\Users\UsersRolesEntity;
-use App\UI\Sign\SignUpFactory;
+use App\Presentation\Backend\Permission\Component\Users\UsersRolesEntity;
+use App\Presentation\Install\Factory\DatabaseFactory;
+use App\Presentation\Install\Factory\WebsiteFactory;
+use App\Presentation\Sign\SignUpFactory;
 use Dibi\Connection;
 use Dibi\Exception;
 use Drago\Application\UI\Alert;
@@ -18,10 +18,7 @@ use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
 
 
-/**
- * Installation and configuration application.
- * @property InstallTemplate $template
- */
+/** @property InstallTemplate $template */
 final class InstallPresenter extends Presenter
 {
 	use TranslatorAdapter;
@@ -39,7 +36,6 @@ final class InstallPresenter extends Presenter
 	}
 
 
-	/** Prepare the installation step before rendering. */
 	protected function beforeRender(): void
 	{
 		parent::beforeRender();
@@ -49,28 +45,24 @@ final class InstallPresenter extends Presenter
 	}
 
 
-	/** Render default installation page. */
 	public function renderDefault(): void
 	{
 		$this->redrawControl('install');
 	}
 
 
-	/** Handle the installation process start. */
 	public function handleRun(): void
 	{
 		$this->steps->setStep(1);
 	}
 
 
-	/** Handle migration run. */
 	public function handleRunMigration(string $file): void
 	{
 		$this->sendJson($this->migrationService->run($file));
 	}
 
 
-	/** Handle migration success. */
 	public function handleMigrationsDone(): void
 	{
 		$this->steps->setStep(3);
@@ -78,14 +70,12 @@ final class InstallPresenter extends Presenter
 	}
 
 
-	/** Handle migration failure. */
 	public function handleMigrationsFail(): void
 	{
 		$this->flashMessage('Database installation failed.', Alert::Danger);
 	}
 
 
-	/** Create and return the database configuration form. */
 	protected function createComponentDatabase(): Form
 	{
 		$form = $this->databaseFactory->create();
@@ -98,7 +88,6 @@ final class InstallPresenter extends Presenter
 	}
 
 
-	/** Create and return the website configuration form. */
 	protected function createComponentWebsite(): Form
 	{
 		$form = $this->websiteFactory->create();
@@ -111,7 +100,6 @@ final class InstallPresenter extends Presenter
 	}
 
 
-	/** Create and return the account creation form for the administrator. */
 	protected function createComponentAccount(): Form
 	{
 		$form = $this->userSingUpFactory->create();

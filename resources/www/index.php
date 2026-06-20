@@ -10,30 +10,23 @@ use Nette\DI\Container;
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
 
-// Composer autoload
 require __DIR__ . '/../vendor/autoload.php';
 
 
-/** Application runner class to manage Nette application lifecycle. */
-class ApplicationRunner
+final class ApplicationRunner
 {
 	private Bootstrap $bootstrap;
 
 
 	public function __construct()
 	{
-		// Initialize the Bootstrap class for app configuration
 		$this->bootstrap = new Bootstrap;
 	}
 
 
-	/**
-	 * Run the Nette application.
-	 * @throws Throwable
-	 */
+	/** @throws Throwable */
 	public function run(): void
 	{
-		// Create the container and get the application service
 		$lockFileDir = dirname(__DIR__);
 		if (is_file(InstallLock::getPath($lockFileDir))) {
 			$container = $this->bootstrap
@@ -57,7 +50,6 @@ class ApplicationRunner
 	}
 
 
-	/** Recreate the lock file if the application is already installed. */
 	private function recreateLockIfInstalled(Container $container): bool
 	{
 		try {

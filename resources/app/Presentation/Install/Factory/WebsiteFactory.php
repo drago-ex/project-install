@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Install\Factory;
+namespace App\Presentation\Install\Factory;
 
 use App\Core\Settings\SettingsEntity;
-use App\Install\Steps;
+use App\Presentation\Install\Steps;
 use Dibi\Connection;
 use Dibi\Exception;
 use Nette\Application\UI\Form;
 
 
-/** Factory for website settings during installation. */
 final readonly class WebsiteFactory
 {
 	private Steps $steps;
@@ -27,7 +26,6 @@ final readonly class WebsiteFactory
 	}
 
 
-	/** Creates the website settings form. */
 	public function create(): Form
 	{
 		$form = new Form;

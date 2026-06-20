@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Install\Factory;
+namespace App\Presentation\Install\Factory;
 
 use Drago\Utils\ExtraArrayHash;
 
 
-/** Class representing database connection data. */
 class DatabaseValues extends ExtraArrayHash
 {
 	public const string

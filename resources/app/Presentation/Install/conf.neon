@@ -25,7 +25,7 @@ application:
 	scanDirs: false
 
 	# application mapping
-	mapping: App\*\**Presenter
+	mapping: App\Presentation\*\**Presenter
 
 
 # application extensions

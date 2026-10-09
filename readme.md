@@ -7,6 +7,7 @@ Application installation package.
 [![Coding Style](https://github.com/drago-ex/project-install/actions/workflows/coding-style.yml/badge.svg)](https://github.com/drago-ex/project-install/actions/workflows/coding-style.yml)
 
 ## Requirements
+
 - PHP >= 8.3
 - Nette Framework
 - Composer
@@ -16,11 +17,13 @@ Application installation package.
 - Drago Project core packages
 
 ## Installation
+
 ```bash
 composer require drago-ex/project-install
 ```
 
 ## Project files
+
 File copying is handled automatically by [drago-ex/project-tools](https://github.com/drago-ex/project-tools),
 which must be installed in your project. Without it, copy the files manually according to the `copy` section
 in this package's `composer.json`. To skip this package, set `"skip": true` under

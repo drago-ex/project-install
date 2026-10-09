@@ -16,8 +16,8 @@ services:
 
 
 routing:
-    routes:
-        '[<lang=cs cs|en>/]<presenter>/': Install:default
+	routes:
+		'[<lang=cs cs|en>/]<presenter>/': Install:default
 
 
 # application settings

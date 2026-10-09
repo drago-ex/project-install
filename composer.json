@@ -1,7 +1,7 @@
 {
 	"name": "drago-ex/project-install",
-	"type": "drago-tools-resource",
 	"description": "Application installation package.",
+	"type": "drago-tools-resource",
 	"license": ["MIT"],
 	"require": {
 		"php": ">=8.3 <9",
@@ -20,8 +20,23 @@
 		"drago-ex/project-backend-ui": "^2.0",
 		"drago-ex/project-settings": "^1.0"
 	},
+	"require-dev": {
+		"phpstan/phpstan-nette": "^2.0",
+		"drago-ex/project-tools": "^1.0"
+	},
 	"autoload": {
 		"classmap": ["src/"]
+	},
+	"scripts": {
+		"phpstan": "phpstan analyse",
+		"post-install-cmd": [
+			"drago-install --dev",
+			"drago-clean"
+		],
+		"post-update-cmd": [
+			"drago-install --dev",
+			"drago-clean"
+		]
 	},
 	"extra": {
 		"drago-tools": {
@@ -42,20 +57,5 @@
 		"drago-translator": {
 			"translation": "app/Presentation/Install/Translate"
 		}
-	},
-	"require-dev": {
-		"phpstan/phpstan-nette": "^2.0",
-		"drago-ex/project-tools": "^1.0"
-	},
-	"scripts": {
-		"phpstan": "phpstan analyse",
-		"post-install-cmd": [
-			"drago-install --dev",
-			"drago-clean"
-		],
-		"post-update-cmd": [
-			"drago-install --dev",
-			"drago-clean"
-		]
 	}
 }

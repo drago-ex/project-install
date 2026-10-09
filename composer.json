@@ -38,6 +38,9 @@
 					"resources/www": "www"
 				}
 			}
+		},
+		"drago-translator": {
+			"translation": "app/Presentation/Install/Translate"
 		}
 	},
 	"require-dev": {

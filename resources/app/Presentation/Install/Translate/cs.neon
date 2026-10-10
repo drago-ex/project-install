@@ -28,23 +28,18 @@
 	"Pokud se názvy nových tabulek budou shodovat se stávajícími, nebude možné instalaci dokončit."
 
 "Start installation": "Spustit instalaci"
-"Instalace proběhla úspěšně!": "Instalace databáze byla úspěšně dokončena."
-"Instalace selhala.": "Instalace databáze selhala."
 
 "Site name and description": "Název a popis webu"
 "Please enter basic information for the website.": "Zadejte prosím základní informace o Vašem webu."
-"Sign up": "Registrace"
 "Administrator account registration.": "Vytvoření účtu administrátora."
 "Installation successfully completed": "Instalace byla úspěšně dokončena"
 "The system has been successfully installed and configured. Click the button below to finalize the process and proceed to the administration area.":
 	"Systém byl úspěšně nainstalován a zkonfigurován. Kliknutím na tlačítko níže dokončíte proces a budete přesměrováni do administrace."
-"Delete the following files:": "Odstraňte tyto soubory a složky:"
 "Go to administration": "Přejít do administrace"
 
 # component database
 "Database server": "Databázový server"
 "Username": "Uživatelské jméno"
-"Password": "Heslo"
 "Database name": "Název databáze"
 "Connection test": "Test připojení"
 "Database settings were successful.": "Nastavení databáze bylo úspěšně uloženo."
@@ -54,8 +49,6 @@
 "The database server did not respond.": "Databázový server neodpovídá."
 
 # component tables
-"Upload database": "Nahrát databázi"
-"Some table names already exist in the database.": "Některé tabulky v databázi již existují."
 
 # component website
 "Site name": "Název webu"
@@ -64,16 +57,8 @@
 "Site settings successful.": "Nastavení webu bylo úspěšně uloženo."
 
 # component account
-"Email address": "E-mailová adresa"
-"Please enter a valid email address.": "Zadejte prosím platnou e-mailovou adresu."
-"Password to check": "Heslo pro kontrolu"
-"Passwords do not match.": "Zadaná hesla se neshodují."
 "Registration": "Dokončit registraci"
 "Account administrator registration successful.": "Registrace administrátora byla úspěšná."
-"Password must be at least %d characters long.": "Heslo musí mít minimálně %d znaků."
-"Your password": "Vaše heslo"
-"Full name": "Celé jméno"
 
 # general
 "Unknown status code.": "Neznámý stavový kód."
-"This field is required.": "Toto pole je povinné."

@@ -6,7 +6,7 @@
 	"require": {
 		"php": ">=8.3 <9",
 		"drago-ex/bootstrap": "^2.0",
-		"drago-ex/translator": "^3.0",
+		"drago-ex/translator": "^4.0",
 		"drago-ex/migration": "^2.0",
 		"drago-ex/application": "^3.0",
 		"drago-ex/component": "^2.0",
@@ -55,7 +55,7 @@
 			}
 		},
 		"drago-translator": {
-			"translation": "app/Presentation/Install/Translate"
+			"translation": "resources/app/Presentation/Install/Translate"
 		}
 	}
 }

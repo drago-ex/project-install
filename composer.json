@@ -55,7 +55,7 @@
 			}
 		},
 		"drago-translator": {
-			"translation": "resources/app/Presentation/Install/Translate"
+			"translation": "app/Presentation/Install/Translate"
 		}
 	}
 }

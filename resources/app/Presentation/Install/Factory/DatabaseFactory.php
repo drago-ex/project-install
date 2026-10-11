@@ -41,12 +41,12 @@ final readonly class DatabaseFactory
 			->setRequired();
 
 		$form->addSubmit('send', 'Connection test');
-		$form->onSuccess[] = $this->success(...);
+		$form->onSuccess[] = $this->processDatabaseConnectionForm(...);
 		return $form;
 	}
 
 
-	public function success(Form $form, DatabaseValues $data): void
+	public function processDatabaseConnectionForm(Form $form, DatabaseValues $data): void
 	{
 		try {
 			if (dibi::connect($data->toArray())->isConnected()) {

@@ -38,7 +38,7 @@ final readonly class WebsiteFactory
 			->setRequired();
 
 		$form->addSubmit('send', 'Save data');
-		$form->onSuccess[] = $this->success(...);
+		$form->onSuccess[] = $this->processWebsiteSettingsForm(...);
 
 		return $form;
 	}
@@ -47,7 +47,7 @@ final readonly class WebsiteFactory
 	/** Handles the successful submission of the website settings form.
 	 * @throws Exception
 	 */
-	public function success(Form $form, WebsiteValues $data): void
+	public function processWebsiteSettingsForm(Form $form, WebsiteValues $data): void
 	{
 		$settings = [
 			['name' => WebsiteValues::Website, 'value' => $data->website],

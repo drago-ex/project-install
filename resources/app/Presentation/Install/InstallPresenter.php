@@ -36,21 +36,6 @@ final class InstallPresenter extends Presenter
 	}
 
 
-	protected function beforeRender(): void
-	{
-		parent::beforeRender();
-		$step = $this->steps->getStep();
-		$this->template->step = $step ?? 0;
-		$this->template->migrationFiles = $this->migrationService->getFiles();
-	}
-
-
-	public function renderDefault(): void
-	{
-		$this->redrawControl('install');
-	}
-
-
 	public function handleRun(): void
 	{
 		$this->steps->setStep(1);
@@ -73,6 +58,34 @@ final class InstallPresenter extends Presenter
 	public function handleMigrationsFail(): void
 	{
 		$this->flashMessage('Database installation failed.', Alert::Danger);
+	}
+
+
+	/** @throws Exception */
+	public function handleFinish(): void
+	{
+		$this->connection->insert(SettingsEntity::Table, [
+			SettingsEntity::ColumnName => 'installed',
+			SettingsEntity::ColumnValue => '1',
+		])->execute();
+
+		InstallLock::create(dirname($this->tempPath));
+		$this->redirectUrl('/admin');
+	}
+
+
+	protected function beforeRender(): void
+	{
+		parent::beforeRender();
+		$step = $this->steps->getStep();
+		$this->template->step = $step ?? 0;
+		$this->template->migrationFiles = $this->migrationService->getFiles();
+	}
+
+
+	public function renderDefault(): void
+	{
+		$this->redrawControl('install');
 	}
 
 
@@ -114,18 +127,5 @@ final class InstallPresenter extends Presenter
 		};
 
 		return $form;
-	}
-
-
-	/** @throws Exception */
-	public function handleFinish(): void
-	{
-		$this->connection->insert(SettingsEntity::Table, [
-			SettingsEntity::ColumnName => 'installed',
-			SettingsEntity::ColumnValue => '1',
-		])->execute();
-
-		InstallLock::create(dirname($this->tempPath));
-		$this->redirectUrl('/admin');
 	}
 }

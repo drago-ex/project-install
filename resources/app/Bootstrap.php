@@ -36,6 +36,13 @@ final class Bootstrap
 	/** @throws Throwable */
 	public function bootWebApplication(): Container
 	{
+		return $this->bootConfigurator()->createContainer();
+	}
+
+
+	/** @throws Throwable */
+	public function bootConfigurator(): ExtraConfigurator
+	{
 		$this->initializeEnvironment();
 		$this->configurator->createRobotLoader()
 			->addDirectory(__DIR__)
@@ -43,7 +50,7 @@ final class Bootstrap
 			->register();
 
 		$this->setupContainer();
-		return $this->configurator->createContainer();
+		return $this->configurator;
 	}
 
 

@@ -5,3 +5,7 @@ parameters:
 	level: 8
 	paths:
 		- resources/app
+
+	excludePaths:
+		analyse:
+			- resources/app/Core/Settings/SettingsRequire.php

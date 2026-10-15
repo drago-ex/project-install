@@ -11,6 +11,7 @@ services:
 	- App\Presentation\Install\Factory\DatabaseFactory(configPath: %appDir%)
 	- App\Presentation\Install\Factory\WebsiteFactory
 	- App\Presentation\Sign\Factory
+	- App\Presentation\Sign\RateLimiter
 	- App\Presentation\Sign\SignUpFactory
 	- App\Presentation\Install\InstallPresenter(tempPath: %tempDir%)
 

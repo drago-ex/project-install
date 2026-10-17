@@ -37,6 +37,14 @@ latte:
 # application extensions
 extensions:
 	translator: Drago\Localization\DI\TranslatorExtension
+	migration: Drago\Migration\DI\MigrationExtension(%consoleMode%)
+	console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
+
+
+# Symfony Console
+console:
+	name: Symfony Console
+	version: '1.0'
 
 
 # nette asset building

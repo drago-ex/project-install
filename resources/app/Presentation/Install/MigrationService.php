@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace App\Presentation\Install;
 
-use Dibi\Connection;
+use Drago\Migration\MigrationRunner;
 use InvalidArgumentException;
 use RuntimeException;
 use Throwable;
 use Tracy\Debugger;
 
 
+/**
+ * Runs the SQL files of the project's migrations directory for the web installer.
+ *
+ * Files are run by drago-ex/migration, so they are recorded in the `migrations` table exactly as with
+ * `vendor/bin/migration db:migrate migrations`: an already executed file is skipped, a changed one is
+ * refused, and the console can continue with later migrations.
+ */
 final readonly class MigrationService
 {
 	public function __construct(
-		private Connection $db,
+		private MigrationRunner $runner,
 		private string $migrationsPath,
 	) {
 	}
@@ -45,7 +52,7 @@ final readonly class MigrationService
 	 * Runs one migration.
 	 * @return array{
 	 *     file: string,
-	 *     status: 'success'
+	 *     status: 'success'|'skipped'
 	 * }|array{
 	 *     file: string,
 	 *     status: 'error',
@@ -63,11 +70,15 @@ final readonly class MigrationService
 			throw new RuntimeException('Migration file not found.');
 		}
 
+		$skipped = false;
 		try {
-			$this->db->loadFile($fullPath);
+			$this->runner->run($fullPath, function (string $message) use (&$skipped): void {
+				$skipped = $skipped || str_contains($message, 'SKIP');
+			});
+
 			return [
 				'file' => $file,
-				'status' => 'success',
+				'status' => $skipped ? 'skipped' : 'success',
 			];
 
 		} catch (Throwable $t) {

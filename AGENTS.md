@@ -16,6 +16,13 @@ Use this file as package-specific guidance when working in this repository. Keep
 - `.github/`: CI workflows; keep their PHP versions and commands consistent with Composer and the package scripts.
 - `composer.json`: package metadata, dependency constraints, autoloading, and available Composer scripts.
 
+## Install and Application Mode
+- `resources/www/index.php` boots the install container (`bootInstallApplication()`) until `Install\InstallLock::exists()` finds `app/installed.lock` (a lock in `temp/` from older versions is moved there), then the application container.
+- `resources/app/Bootstrap.php`: the web, console and `nette/mcp-inspector` entry points share `setupContainer()`, whose RobotLoader excludes `app/Presentation/Install`; Nette also finds presenters through it, so the installer must stay out of those containers.
+- `Bootstrap.php`, `app.neon` and `www/` are copied with `replace-once`, so changes here do not reach existing projects automatically; mention needed manual steps in `readme.md`.
+- `MigrationService` runs the files of the project `migrations/` directory through `Drago\Migration\MigrationRunner` (services in `Install/conf.neon`), so they are recorded as `core` like `vendor/bin/migration db:migrate migrations`; the wizard JS treats `skipped` as success.
+- Tests: `composer tester`; `tests/bootstrap.php` autoloads `resources/app`. Install dependencies with `--no-scripts`, otherwise `drago-install --dev` copies other packages into this repository.
+
 ## Dependencies
 
 Composer constraints describe the package contract. Before changing integration behavior, inspect the source and the actual call sites in this package; do not infer runtime usage solely from dependency declarations.

@@ -81,9 +81,8 @@ php vendor/bin/sql-export
 php vendor/bin/migration db:migrate migrations
 ```
 
-The console skips everything the installer has already run. Do not run package migrations from `vendor/`
-(for example the `db:migrate-*` commands of `drago-setup`) on a database set up by the installer: files
-run from `vendor/` are recorded under the package name, so they would be executed again.
+The console skips everything the installer has already run; the `db:migrate` operation of `drago-setup`
+runs the same two commands. Both follow `db-migration-order.json` written by `sql-export`, as the installer does.
 
 ## Console
 

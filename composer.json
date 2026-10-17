@@ -61,6 +61,6 @@
 			"drago-install --dev",
 			"drago-clean"
 		],
-		"tester": "tester tests -s"
+		"tester": "tester tests -s -C"
 	}
 }

@@ -6,10 +6,10 @@ services:
 	- App\Presentation\Install\Steps(@install.cache)
 	- Nette\DI\Config\Adapters\NeonAdapter
 
-	# database migrations, recorded in the migrations table like vendor/bin/migration
+	# database migrations of the packages (from vendor/) and of the project (migrations/), like vendor/bin/migration db:migrate --packages
 	- Drago\Migration\Repository
 	- Drago\Migration\MigrationRunner
-	- App\Presentation\Install\MigrationService(migrationsPath: %appDir%/../migrations)
+	- App\Presentation\Install\MigrationService(projectRoot: %appDir%/..)
 	- App\Presentation\Install\Factory\DatabaseFactory(configPath: %appDir%)
 	- App\Presentation\Install\Factory\WebsiteFactory
 	- App\Presentation\Sign\Factory

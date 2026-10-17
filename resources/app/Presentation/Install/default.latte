@@ -76,7 +76,7 @@
 
 	<div id="steps" class="d-none">
 		{foreach $migrationFiles as $file}
-			<span class="step" data-step="{$file}" data-url="{link runMigration!, file: $file}"></span>
+			<span class="step" data-step="{basename($file)}" data-url="{link runMigration!, file: $file}"></span>
 		{/foreach}
 	</div>
 

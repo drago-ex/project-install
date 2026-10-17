@@ -40,8 +40,9 @@ versions manually.
 `www/index.php` boots one of two DI containers:
 
 - **Install mode** (`bootInstallApplication()`): only the installer in `app/Presentation/Install` and
-  `app/db.neon`. The wizard tests the database connection, writes `app/db.neon`, runs the SQL files from
-  `migrations/`, sets up the website and creates the administrator account.
+  `app/db.neon`. The wizard tests the database connection, writes `app/db.neon`, runs the migrations of the
+  packages (from `vendor/`) and of the project (`migrations/`), sets up the website and creates the administrator
+  account.
 - **Application mode** (`bootWebApplication()`): the whole application without the installer.
 
 The wizard steps follow each other (database, migrations, website, administrator account, finish). Forms
@@ -64,25 +65,26 @@ to `.gitignore` depending on how you deploy.
 
 ## Migrations
 
-The project's `migrations/` directory is the single source of migrations. Copy the SQL files of installed
-packages into it with `vendor/bin/sql-export`.
+The installer runs the migrations of all installed packages straight from `vendor/` (nothing is copied into the
+project), in the order given by their `commands-priority`, followed by the project's own `migrations/` directory.
+It uses the same list as `vendor/bin/migration db:migrate --packages` (`Drago\Migration\MigrationFiles::forProject()`),
+and only a file from that list can be run.
 
-The installer runs these files through `drago-ex/migration`, so they are recorded in the `migrations` table
-exactly as with the console:
+The files run through `drago-ex/migration`, so they are recorded in the `migrations` table exactly as with
+the console:
 
 - an executed file is recorded with its checksum and skipped next time, so the installer can be run again
   after a failure;
 - a recorded file that was changed is refused;
-- later migrations, for example after a package update, are added to `migrations/` with `sql-export` and
-  run from the console:
+- later migrations, for example after a package update, run from the console:
 
 ```bash
-php vendor/bin/sql-export
-php vendor/bin/migration db:migrate migrations
+php vendor/bin/migration db:migrate --packages
 ```
 
-The console skips everything the installer has already run; the `db:migrate` operation of `drago-setup`
-runs the same two commands. Both follow `db-migration-order.json` written by `sql-export`, as the installer does.
+The console skips everything the installer has already run; the `db:migrate` operation of `drago-setup` runs
+the same command. Projects whose `migrations/` still contains copies exported by `sql-export` keep working:
+a copy identical to a package migration is left out, and a file is never run twice.
 
 ## Console
 

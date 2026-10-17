@@ -20,7 +20,7 @@ Use this file as package-specific guidance when working in this repository. Keep
 - `resources/www/index.php` boots the install container (`bootInstallApplication()`) until `Install\InstallLock::exists()` finds `app/installed.lock` (a lock in `temp/` from older versions is moved there), then the application container.
 - `resources/app/Bootstrap.php`: the web, console and `nette/mcp-inspector` entry points share `setupContainer()`, whose RobotLoader excludes `app/Presentation/Install`; Nette also finds presenters through it, so the installer must stay out of those containers.
 - `Bootstrap.php`, `app.neon` and `www/` are copied with `replace-once`, so changes here do not reach existing projects automatically; mention needed manual steps in `readme.md`.
-- `MigrationService` runs the files of the project `migrations/` directory through `Drago\Migration\MigrationRunner` (services in `Install/conf.neon`), so they are recorded as `core` like `vendor/bin/migration db:migrate migrations`; the wizard JS treats `skipped` as success.
+- `MigrationService` runs the list of `Drago\Migration\MigrationFiles::forProject()` (package migrations straight from `vendor/` by `commands-priority`, then the project `migrations/`) through `Drago\Migration\MigrationRunner` (services in `Install/conf.neon`), exactly like `vendor/bin/migration db:migrate --packages`. Files are identified by their path relative to the project root, and only a file from that list can run. The wizard JS treats `skipped` as success.
 - Tests: `composer tester`; `tests/bootstrap.php` autoloads `resources/app`. Install dependencies with `--no-scripts`, otherwise `drago-install --dev` copies other packages into this repository.
 
 ## Dependencies

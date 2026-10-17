@@ -4,49 +4,48 @@ declare(strict_types=1);
 
 namespace App\Presentation\Install;
 
+use Closure;
 use Drago\Migration\MigrationFiles;
 use Drago\Migration\MigrationRunner;
-use InvalidArgumentException;
 use RuntimeException;
 use Throwable;
 use Tracy\Debugger;
 
 
 /**
- * Runs the SQL files of the project's migrations directory for the web installer.
+ * Runs the database migrations for the web installer.
  *
- * Files are run by drago-ex/migration, so they are recorded in the `migrations` table exactly as with
- * `vendor/bin/migration db:migrate migrations`: an already executed file is skipped, a changed one is
- * refused, and the console can continue with later migrations.
+ * The migrations of the installed packages run straight from vendor/ in their order (by commands-priority),
+ * followed by the project's own migrations/; nothing has to be copied. Files are run by drago-ex/migration,
+ * so they are recorded in the `migrations` table exactly as with `vendor/bin/migration db:migrate --packages`:
+ * an already executed file is skipped, a changed one is refused, and the console can continue later.
  */
 final readonly class MigrationService
 {
+	/**
+	 * @param (Closure(string): list<array{file: string, package: string, priority: ?int}>)|null $listMigrations
+	 *        for tests; MigrationFiles::forProject() by default
+	 */
 	public function __construct(
 		private MigrationRunner $runner,
-		private string $migrationsPath,
+		private string $projectRoot,
+		private ?Closure $listMigrations = null,
 	) {
 	}
 
 
 	/**
-	 * Returns the migration files in the order they must run (db-migration-order.json from sql-export).
+	 * The migrations in the order they must run, as paths relative to the project root.
 	 * @return list<string>
 	 */
 	public function getFiles(): array
 	{
-		if (!is_dir($this->migrationsPath)) {
-			return [];
-		}
-
-		return array_map(
-			static fn(string $file): string => basename($file),
-			MigrationFiles::list($this->migrationsPath),
-		);
+		return array_keys($this->migrations());
 	}
 
 
 	/**
-	 * Runs one migration.
+	 * Runs one migration; only a file from getFiles() is accepted.
 	 * @return array{
 	 *     file: string,
 	 *     status: 'success'|'skipped'
@@ -58,14 +57,7 @@ final readonly class MigrationService
 	 */
 	public function run(string $file): array
 	{
-		if (!preg_match('~^[a-zA-Z0-9._-]+\.sql$~', $file)) {
-			throw new InvalidArgumentException('Invalid file name.');
-		}
-
-		$fullPath = $this->migrationsPath . '/' . $file;
-		if (!is_file($fullPath)) {
-			throw new RuntimeException('Migration file not found.');
-		}
+		$fullPath = $this->migrations()[$file] ?? throw new RuntimeException('Migration file not found.');
 
 		$skipped = false;
 		try {
@@ -86,5 +78,24 @@ final readonly class MigrationService
 				'message' => $t->getMessage(),
 			];
 		}
+	}
+
+
+	/**
+	 * @return array<string, string> path relative to the project root => absolute path, in the order they run
+	 */
+	private function migrations(): array
+	{
+		$root = str_replace('\\', '/', (string) (realpath($this->projectRoot) ?: $this->projectRoot));
+		$list = $this->listMigrations ?? MigrationFiles::forProject(...);
+
+		$migrations = [];
+		foreach ($list($this->projectRoot) as $migration) {
+			$path = str_replace('\\', '/', $migration['file']);
+			$relative = str_starts_with($path, $root . '/') ? substr($path, strlen($root) + 1) : $path;
+			$migrations[$relative] = $migration['file'];
+		}
+
+		return $migrations;
 	}
 }

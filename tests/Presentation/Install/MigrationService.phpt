@@ -48,6 +48,12 @@ readonly class MemoryMigrationRepository extends Repository
 	}
 
 
+	public function getChecksumsElsewhere(string $file, string $package): array
+	{
+		return [];
+	}
+
+
 	public function insertMigration(string $package, string $file, string $checksum): void
 	{
 		$this->records["$package/$file"] = $checksum;
@@ -97,65 +103,80 @@ readonly class MemoryMigrationRepository extends Repository
 /** @return array{MigrationService, MemoryMigrationRepository, string} */
 function createService(): array
 {
-	$dir = __DIR__ . '/../../tmp/migrations-' . bin2hex(random_bytes(4));
-	@mkdir(dirname($dir), 0o777, true);
-	Helpers::purge($dir);
-	file_put_contents($dir . '/002_second.sql', 'SELECT 2;');
-	file_put_contents($dir . '/001_first.sql', 'SELECT 1;');
+	$root = __DIR__ . '/../../tmp/project-' . bin2hex(random_bytes(4));
+	@mkdir($root . '/vendor/acme/users/migrations', 0o777, true);
+	@mkdir($root . '/migrations', 0o777, true);
+	Helpers::purge($root . '/migrations');
+	file_put_contents($root . '/vendor/acme/users/migrations/001_first.sql', 'SELECT 1;');
+	file_put_contents($root . '/migrations/002_second.sql', 'SELECT 2;');
+
+	// The order comes from MigrationFiles::forProject(); here a fixed list with one package and the project.
+	$list = fn(string $projectRoot): array => [
+		['file' => realpath($projectRoot) . '/vendor/acme/users/migrations/001_first.sql', 'package' => 'acme/users', 'priority' => 10],
+		['file' => realpath($projectRoot) . '/migrations/002_second.sql', 'package' => 'core', 'priority' => null],
+	];
 
 	$repository = new MemoryMigrationRepository;
-	return [new MigrationService(new MigrationRunner($repository), $dir), $repository, $dir];
+	return [new MigrationService(new MigrationRunner($repository), $root, $list), $repository, $root];
 }
 
 
-test('Files are listed in the order in which they run', function () {
+test('Files are listed in the order in which they run, relative to the project root', function () {
 	[$service] = createService();
-	Assert::same(['001_first.sql', '002_second.sql'], $service->getFiles());
+	Assert::same(['vendor/acme/users/migrations/001_first.sql', 'migrations/002_second.sql'], $service->getFiles());
 });
 
 
-test('A migration is executed and recorded like a console migration of the project', function () {
+test('A package migration runs from vendor/ and is recorded under its package, like in the console', function () {
 	[$service, $repository] = createService();
 
-	Assert::same(['file' => '001_first.sql', 'status' => 'success'], $service->run('001_first.sql'));
-	Assert::same(['001_first.sql'], $repository->getExecuted());
-	Assert::same(['core/001_first.sql'], array_keys($repository->getRecords()));
+	Assert::same(
+		['file' => 'vendor/acme/users/migrations/001_first.sql', 'status' => 'success'],
+		$service->run('vendor/acme/users/migrations/001_first.sql'),
+	);
+	Assert::same(
+		['file' => 'migrations/002_second.sql', 'status' => 'success'],
+		$service->run('migrations/002_second.sql'),
+	);
+	Assert::same(['001_first.sql', '002_second.sql'], $repository->getExecuted());
+	Assert::same(['acme/users/001_first.sql', 'core/002_second.sql'], array_keys($repository->getRecords()));
 });
 
 
 test('A recorded migration is skipped, so the installer can be run again', function () {
 	[$service, $repository] = createService();
-	$service->run('001_first.sql');
+	$service->run('migrations/002_second.sql');
 
-	Assert::same(['file' => '001_first.sql', 'status' => 'skipped'], $service->run('001_first.sql'));
-	Assert::same(['001_first.sql'], $repository->getExecuted());
+	Assert::same(['file' => 'migrations/002_second.sql', 'status' => 'skipped'], $service->run('migrations/002_second.sql'));
+	Assert::same(['002_second.sql'], $repository->getExecuted());
 });
 
 
 test('A recorded migration that was changed is refused', function () {
-	[$service, , $dir] = createService();
-	$service->run('001_first.sql');
-	file_put_contents($dir . '/001_first.sql', 'SELECT 100;');
+	[$service, , $root] = createService();
+	$service->run('migrations/002_second.sql');
+	file_put_contents($root . '/migrations/002_second.sql', 'SELECT 100;');
 
-	$result = $service->run('001_first.sql');
+	$result = $service->run('migrations/002_second.sql');
 	Assert::same('error', $result['status']);
 	Assert::match('%a%was modified after execution%a%', $result['message']);
 });
 
 
 test('A failing migration is reported and not recorded', function () {
-	[$service, $repository, $dir] = createService();
-	file_put_contents($dir . '/003_broken.sql', 'FAIL');
+	[$service, $repository, $root] = createService();
+	file_put_contents($root . '/migrations/002_second.sql', 'FAIL');
 
-	$result = $service->run('003_broken.sql');
+	$result = $service->run('migrations/002_second.sql');
 	Assert::same('error', $result['status']);
-	Assert::same('SQL error in 003_broken.sql', $result['message']);
+	Assert::same('SQL error in 002_second.sql', $result['message']);
 	Assert::same([], $repository->getRecords());
 });
 
 
-test('Only file names from the migrations directory are accepted', function () {
+test('Only files from the list of migrations are accepted', function () {
 	[$service] = createService();
-	Assert::exception(fn() => $service->run('../app.neon'), InvalidArgumentException::class, 'Invalid file name.');
-	Assert::exception(fn() => $service->run('missing.sql'), RuntimeException::class, 'Migration file not found.');
+	Assert::exception(fn() => $service->run('../app.neon'), RuntimeException::class, 'Migration file not found.');
+	Assert::exception(fn() => $service->run('migrations/missing.sql'), RuntimeException::class, 'Migration file not found.');
+	Assert::exception(fn() => $service->run('app/db.neon'), RuntimeException::class, 'Migration file not found.');
 });

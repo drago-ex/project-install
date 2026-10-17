@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Install;
 
+use Drago\Migration\MigrationFiles;
 use Drago\Migration\MigrationRunner;
 use InvalidArgumentException;
 use RuntimeException;
@@ -28,23 +29,19 @@ final readonly class MigrationService
 
 
 	/**
-	 * Returns a list of migration files.
+	 * Returns the migration files in the order they must run (db-migration-order.json from sql-export).
 	 * @return list<string>
 	 */
 	public function getFiles(): array
 	{
-		$files = glob($this->migrationsPath . '/*.sql');
-		if ($files === false) {
+		if (!is_dir($this->migrationsPath)) {
 			return [];
 		}
 
-		$files = array_map(
+		return array_map(
 			static fn(string $file): string => basename($file),
-			$files,
+			MigrationFiles::list($this->migrationsPath),
 		);
-
-		sort($files);
-		return $files;
 	}
 
 

@@ -7,6 +7,10 @@ parameters:
 		- resources/app
 		- src
 		- tests
+
+	# resources of the dependencies, installed by drago-install --dev
+	scanDirectories:
+		- .dev-resource
 	excludePaths:
 		analyse:
 			- resources/app/Core/Settings/SettingsRequire.php (?)

@@ -86,18 +86,6 @@ final class InstallPresenter extends Presenter
 	}
 
 
-	/**
-	 * Signals of the wizard can be sent directly, so each one checks that the previous steps are done.
-	 * @throws BadRequestException
-	 */
-	private function requireStep(int $step): void
-	{
-		if ($this->steps->getStep() !== $step) {
-			$this->error('This installation step is not available now.', 403);
-		}
-	}
-
-
 	protected function beforeRender(): void
 	{
 		parent::beforeRender();
@@ -154,5 +142,17 @@ final class InstallPresenter extends Presenter
 		};
 
 		return $form;
+	}
+
+
+	/**
+	 * Signals of the wizard can be sent directly, so each one checks that the previous steps are done.
+	 * @throws BadRequestException
+	 */
+	private function requireStep(int $step): void
+	{
+		if ($this->steps->getStep() !== $step) {
+			$this->error('This installation step is not available now.', 403);
+		}
 	}
 }

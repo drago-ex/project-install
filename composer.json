@@ -7,7 +7,7 @@
 		"php": ">=8.3 <9",
 		"drago-ex/bootstrap": "^2.0",
 		"drago-ex/translator": "^4.0",
-		"drago-ex/migration": "^2.0",
+		"drago-ex/migration": "^2.1",
 		"drago-ex/application": "^3.0",
 		"drago-ex/component": "^2.0",
 		"drago-ex/form": "^2.0",

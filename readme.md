@@ -66,7 +66,7 @@ to `.gitignore` depending on how you deploy.
 ## Migrations
 
 The installer runs the migrations of all installed packages straight from `vendor/` (nothing is copied into the
-project), in the order given by their `commands-priority`, followed by the project's own `migrations/` directory.
+project), in the order given by their `migration-priority`, followed by the project's own `migrations/` directory.
 It uses the same list as `vendor/bin/migration db:migrate --packages` (`Drago\Migration\MigrationFiles::forProject()`),
 and only a file from that list can be run.
 

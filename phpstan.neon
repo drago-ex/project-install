@@ -5,7 +5,12 @@ parameters:
 	level: 8
 	paths:
 		- resources/app
-
+		- src
+		- tests
 	excludePaths:
 		analyse:
-			- resources/app/Core/Settings/SettingsRequire.php
+			- resources/app/Core/Settings/SettingsRequire.php (?)
+		analyseAndScan:
+			- tests/tmp (?)
+			- tests/*/temp/* (?)
+			- tests/*/*/temp/* (?)

@@ -7,7 +7,7 @@ Use this file as package-specific guidance when working in this repository. Keep
 - **Type**: drago-tools-resource
 - **Purpose**: Application installation package.
 - **PHP**: >=8.3 <9
-- **Runtime dependencies**: drago-ex/bootstrap (^2.0), drago-ex/translator (^4.0), drago-ex/migration (^2.0), drago-ex/application (^3.0), drago-ex/component (^2.0), drago-ex/form (^2.0), drago-ex/database (^3.0), drago-ex/project-docker (^2.0), drago-ex/project-docker-db (^2.0), drago-ex/project-front (^2.0), drago-ex/project-auth (^2.0), drago-ex/project-backend (^2.0), drago-ex/project-backend-ui (^2.0), drago-ex/project-settings (^1.0)
+- **Runtime dependencies**: drago-ex/bootstrap (^2.0), drago-ex/translator (^4.0), drago-ex/migration (^2.3), drago-ex/application (^3.0), drago-ex/component (^2.0), drago-ex/form (^2.0), drago-ex/database (^3.0), drago-ex/project-docker (^2.0), drago-ex/project-docker-db (^2.0), drago-ex/project-front (^2.0), drago-ex/project-auth (^2.0), drago-ex/project-backend (^2.0), drago-ex/project-backend-ui (^2.0), drago-ex/project-settings (^1.0)
 - **License**: MIT
 
 ## Repository Layout

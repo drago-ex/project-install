@@ -21,7 +21,7 @@ Use this file as package-specific guidance when working in this repository. Keep
 - `resources/app/Bootstrap.php`: the web, console and `nette/mcp-inspector` entry points share `setupContainer()`, whose RobotLoader excludes `app/Presentation/Install`; Nette also finds presenters through it, so the installer must stay out of those containers.
 - `Bootstrap.php`, `app.neon` and `www/` are copied with `replace-once`, so changes here do not reach existing projects automatically; mention needed manual steps in `readme.md`.
 - `MigrationService` runs the list of `Drago\Migration\MigrationFiles::forProject()` (package migrations straight from `vendor/` by `migration-priority`, then the project `migrations/`) through `Drago\Migration\MigrationRunner` (services in `Install/conf.neon`), exactly like `vendor/bin/migration db:migrate --packages`. Files are identified by their path relative to the project root, and only a file from that list can run. The wizard JS treats `skipped` as success.
-- Tests: `composer tester`; `tests/bootstrap.php` autoloads `resources/app`. Install dependencies with `--no-scripts`, otherwise `drago-install --dev` copies other packages into this repository.
+- Tests: `composer tester`; `tests/bootstrap.php` autoloads `App\` classes from `resources/app`, then from `.dev-resource/app` (resources of the dependencies, installed by `drago-install --dev`).
 
 ## Dependencies
 
@@ -32,12 +32,8 @@ Development dependencies include phpstan/phpstan-nette (^2.0), drago-ex/project-
 
 ```bash
 composer phpstan                # phpstan analyse
+composer tester                 # tester tests -s -C
 ```
-
-## Tests
-
-This repository does not currently define a test script in `composer.json` or contain a `tests/` directory.
-Do not claim behavior is covered by tests unless you find and run a relevant suite. When adding a test suite, follow the package’s existing Nette Tester setup if one is present and add an explicit Composer script.
 
 ## Installation Hooks
 

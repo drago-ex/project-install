@@ -37,53 +37,24 @@ versions manually.
 
 ## How it works
 
-`www/index.php` boots one of two DI containers:
-
-- **Install mode** (`bootInstallApplication()`): only the installer in `app/Presentation/Install` and
-  `app/db.neon`. The wizard tests the database connection, writes `app/db.neon`, runs the migrations of the
-  packages (from `vendor/`) and of the project (`migrations/`), sets up the website and creates the administrator
-  account.
-- **Application mode** (`bootWebApplication()`): the whole application without the installer.
-
-The wizard steps follow each other (database, migrations, website, administrator account, finish). Forms
-and signals of a step that is not current answer with HTTP 403, so the steps cannot be skipped or repeated
-by sending requests directly. The administrator role is assigned to the account created in the wizard.
-
-The console (`bootConsoleApplication()`) and `nette/mcp-inspector` (`bootConfigurator()`) use the same
-configuration as the application, including the RobotLoader that excludes the installer.
+Until the application is installed, `www/index.php` runs only the installer (`app/Presentation/Install`).
+The wizard tests the database connection, writes `app/db.neon`, runs the migrations, sets up the website
+and creates the administrator account. The steps cannot be skipped or repeated.
 
 ## Installation lock
 
-Finishing the wizard stores `installed = 1` in the `settings` table and writes `app/installed.lock`.
-While the lock exists, the application mode is used. The lock is kept in `app/`, next to `db.neon`,
-so clearing `temp/` does not reopen the installer. A lock in `temp/` written by older versions is
-still accepted and moved to `app/`.
-
-When the lock is missing, the installer checks the database and recreates the lock if the application
-is already installed. Keep `app/installed.lock` on the server, and decide whether to commit it or add it
-to `.gitignore` depending on how you deploy.
+Finishing the wizard writes `app/installed.lock`; while it exists, the application runs instead of the installer.
+Keep it on the server, and commit it or add it to `.gitignore` depending on how you deploy.
 
 ## Migrations
 
-The installer runs the migrations of all installed packages straight from `vendor/` (nothing is copied into the
-project), in the order given by their `migration-priority`, followed by the project's own `migrations/` directory.
-It uses the same list as `vendor/bin/migration db:migrate --packages` (`Drago\Migration\MigrationFiles::forProject()`),
-and only a file from that list can be run.
-
-The files run through `drago-ex/migration`, so they are recorded in the `migrations` table exactly as with
-the console:
-
-- an executed file is recorded with its checksum and skipped next time, so the installer can be run again
-  after a failure;
-- a recorded file that was changed is refused;
-- later migrations, for example after a package update, run from the console:
+The installer runs the migrations of all installed packages in their `migration-priority` order, then the project's
+own `migrations/`, the same way as `vendor/bin/migration db:migrate --packages`. Executed files are recorded,
+so the installer can be run again after a failure, and later migrations run from the console:
 
 ```bash
 php vendor/bin/migration db:migrate --packages
 ```
-
-The console skips everything the installer has already run. Projects whose `migrations/` still contains copies exported by `sql-export` keep working:
-a copy identical to a package migration is left out, and a file is never run twice.
 
 ## Console
 

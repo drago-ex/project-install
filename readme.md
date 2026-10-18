@@ -82,8 +82,7 @@ the console:
 php vendor/bin/migration db:migrate --packages
 ```
 
-The console skips everything the installer has already run; the `db:migrate` operation of `drago-setup` runs
-the same command. Projects whose `migrations/` still contains copies exported by `sql-export` keep working:
+The console skips everything the installer has already run. Projects whose `migrations/` still contains copies exported by `sql-export` keep working:
 a copy identical to a package migration is left out, and a file is never run twice.
 
 ## Console

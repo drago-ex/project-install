@@ -15,7 +15,7 @@ use Tracy\Debugger;
 /**
  * Runs the database migrations for the web installer.
  *
- * The migrations of the installed packages run straight from vendor/ in their order (by commands-priority),
+ * The migrations of the installed packages run straight from vendor/ in their order (by migration-priority),
  * followed by the project's own migrations/; nothing has to be copied. Files are run by drago-ex/migration,
  * so they are recorded in the `migrations` table exactly as with `vendor/bin/migration db:migrate --packages`:
  * an already executed file is skipped, a changed one is refused, and the console can continue later.

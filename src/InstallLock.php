@@ -4,23 +4,53 @@ declare(strict_types=1);
 
 namespace Install;
 
+use RuntimeException;
 
+
+/**
+ * Marks a finished installation. The lock lives in the app directory next to db.neon, which
+ * the installer writes anyway, so clearing temp/ does not reopen the installer.
+ */
 class InstallLock
 {
 	public const string
-		DirName = 'temp',
+		DirName = 'app',
+		LegacyDirName = 'temp',
 		FileName = 'installed.lock';
 
 
-	public static function getPath(string $filePath): string
+	public static function getPath(string $rootDir): string
 	{
-		return sprintf('%s/%s/%s', $filePath, self::DirName, self::FileName);
+		return sprintf('%s/%s/%s', $rootDir, self::DirName, self::FileName);
 	}
 
 
-	public static function create(string $filePath, string $message = 'installed'): void
+	/**
+	 * Also accepts the lock in temp/ written by older versions and moves it to the current location.
+	 */
+	public static function exists(string $rootDir): bool
 	{
+		if (is_file(self::getPath($rootDir))) {
+			return true;
+		}
+
+		$legacyPath = sprintf('%s/%s/%s', $rootDir, self::LegacyDirName, self::FileName);
+		if (is_file($legacyPath)) {
+			self::create($rootDir, 'moved from ' . self::LegacyDirName);
+			return true;
+		}
+
+		return false;
+	}
+
+
+	/** @throws RuntimeException */
+	public static function create(string $rootDir, string $message = 'installed'): void
+	{
+		$path = self::getPath($rootDir);
 		$content = $message . ': ' . date('Y-m-d H:i:s');
-		file_put_contents(self::getPath($filePath), $content);
+		if (@file_put_contents($path, $content) === false) {
+			throw new RuntimeException("Unable to write the installation lock '$path'.");
+		}
 	}
 }

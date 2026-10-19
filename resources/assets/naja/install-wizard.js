@@ -74,7 +74,8 @@ export default class InstallWizard {
 				const res = await this.#naja.makeRequest('GET', url, null, { history: false });
 				console.log(`Migration response for ${file}:`, res);
 
-				if (res.status === 'success') {
+				// "skipped" means the migration is already recorded in the migrations table.
+				if (res.status === 'success' || res.status === 'skipped') {
 					done++;
 				} else {
 					allOk = false;

@@ -14,6 +14,7 @@ use Dibi\Exception;
 use Drago\Application\UI\Alert;
 use Drago\Localization\TranslatorAdapter;
 use Install\InstallLock;
+use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
 
@@ -44,12 +45,14 @@ final class InstallPresenter extends Presenter
 
 	public function handleRunMigration(string $file): void
 	{
+		$this->requireStep(2);
 		$this->sendJson($this->migrationService->run($file));
 	}
 
 
 	public function handleMigrationsDone(): void
 	{
+		$this->requireStep(2);
 		$this->steps->setStep(3);
 		$this->flashMessage('Database installation was successful.', Alert::Success);
 	}
@@ -64,10 +67,19 @@ final class InstallPresenter extends Presenter
 	/** @throws Exception */
 	public function handleFinish(): void
 	{
-		$this->connection->insert(SettingsEntity::Table, [
-			SettingsEntity::ColumnName => 'installed',
-			SettingsEntity::ColumnValue => '1',
-		])->execute();
+		$this->requireStep(5);
+
+		$installed = $this->connection->select('1')
+			->from(SettingsEntity::Table)
+			->where('%n = ?', SettingsEntity::ColumnName, 'installed')
+			->fetchSingle();
+
+		if (!$installed) {
+			$this->connection->insert(SettingsEntity::Table, [
+				SettingsEntity::ColumnName => 'installed',
+				SettingsEntity::ColumnValue => '1',
+			])->execute();
+		}
 
 		InstallLock::create(dirname($this->tempPath));
 		$this->redirectUrl('/admin');
@@ -93,6 +105,7 @@ final class InstallPresenter extends Presenter
 	{
 		$form = $this->databaseFactory->create();
 		$form->setTranslator($this->translator);
+		$form->onValidate[] = fn() => $this->requireStep(1);
 		$form->onSuccess[] = function () {
 			$this->steps->setStep(2);
 			$this->flashMessage('Database settings were successful.', Alert::Success);
@@ -105,6 +118,7 @@ final class InstallPresenter extends Presenter
 	{
 		$form = $this->websiteFactory->create();
 		$form->setTranslator($this->translator);
+		$form->onValidate[] = fn() => $this->requireStep(3);
 		$form->onSuccess[] = function () {
 			$this->steps->setStep(4);
 			$this->flashMessage('Site settings successful.', Alert::Success);
@@ -117,9 +131,10 @@ final class InstallPresenter extends Presenter
 	{
 		$form = $this->userSingUpFactory->create();
 		$form->setTranslator($this->translator);
+		$form->onValidate[] = fn() => $this->requireStep(4);
 		$form->onSuccess[] = function () {
 			$this->connection->insert(UsersRolesEntity::Table, [
-				UsersRolesEntity::ColumnUserId => 1,
+				UsersRolesEntity::ColumnUserId => $this->connection->getInsertId(),
 				UsersRolesEntity::ColumnRoleId => 1,
 			])->execute();
 			$this->steps->setStep(5);
@@ -127,5 +142,17 @@ final class InstallPresenter extends Presenter
 		};
 
 		return $form;
+	}
+
+
+	/**
+	 * Signals of the wizard can be sent directly, so each one checks that the previous steps are done.
+	 * @throws BadRequestException
+	 */
+	private function requireStep(int $step): void
+	{
+		if ($this->steps->getStep() !== $step) {
+			$this->error('This installation step is not available now.', 403);
+		}
 	}
 }

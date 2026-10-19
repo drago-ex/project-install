@@ -44,11 +44,6 @@ final class Bootstrap
 	public function bootConfigurator(): ExtraConfigurator
 	{
 		$this->initializeEnvironment();
-		$this->configurator->createRobotLoader()
-			->addDirectory(__DIR__)
-			->excludeDirectory(__DIR__ . '/Presentation/Install')
-			->register();
-
 		$this->setupContainer();
 		return $this->configurator;
 	}
@@ -78,9 +73,18 @@ final class Bootstrap
 	}
 
 
-	/** @throws Throwable */
+	/**
+	 * Shared by the web and console containers. The RobotLoader is also used by Nette to find
+	 * presenters, so excluding the installer here keeps InstallPresenter out of both containers.
+	 * @throws Throwable
+	 */
 	private function setupContainer(): void
 	{
+		$this->configurator->createRobotLoader()
+			->addDirectory(__DIR__)
+			->excludeDirectory(__DIR__ . '/Presentation/Install')
+			->register();
+
 		$this->configurator->addFindConfig(__DIR__, 'Translate', 'Install');
 	}
 }

@@ -28,7 +28,7 @@ final class ApplicationRunner
 	public function run(): void
 	{
 		$lockFileDir = dirname(__DIR__);
-		if (is_file(InstallLock::getPath($lockFileDir))) {
+		if (InstallLock::exists($lockFileDir)) {
 			$container = $this->bootstrap
 				->bootWebApplication();
 

@@ -9,6 +9,8 @@ use dibi;
 use Nette\Application\UI\Form;
 use Nette\DI\Config\Adapters\NeonAdapter;
 use Throwable;
+use Tracy\Debugger;
+use Tracy\ILogger;
 
 
 final readonly class DatabaseFactory
@@ -74,16 +76,20 @@ final readonly class DatabaseFactory
 			}
 
 		} catch (Throwable $t) {
-			if ($t->getCode()) {
-				$message = match ($t->getCode()) {
-					1044 => 'Access denied, check database settings.',
-					1045 => 'Failed to verify database username or password.',
-					1049 => 'The database name does not exist.',
-					2002 => 'The database server did not respond.',
-					default => 'Unknown status code.',
-				};
-				$form->addError($message);
+			// Every failure stops the step; without an error the wizard would go on without db.neon.
+			$message = match ($t->getCode()) {
+				1044 => 'Access denied, check database settings.',
+				1045 => 'Failed to verify database username or password.',
+				1049 => 'The database name does not exist.',
+				2002 => 'The database server did not respond.',
+				default => null,
+			};
+			if ($message === null) {
+				Debugger::log($t, ILogger::EXCEPTION);
+				$message = 'Unknown status code.';
 			}
+
+			$form->addError($message);
 		}
 	}
 }

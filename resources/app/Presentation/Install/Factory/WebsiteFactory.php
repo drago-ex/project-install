@@ -50,13 +50,20 @@ final readonly class WebsiteFactory
 	public function processWebsiteSettingsForm(Form $form, WebsiteValues $data): void
 	{
 		$settings = [
-			['name' => WebsiteValues::Website, 'value' => $data->website],
-			['name' => WebsiteValues::Description, 'value' => $data->description],
+			WebsiteValues::Website => $data->website,
+			WebsiteValues::Description => $data->description,
 		];
 
-		foreach ($settings as $rows) {
-			$this->db->insert(SettingsEntity::Table, $rows)
-				->execute();
+		// The step can run again (e.g. after the cache with the steps was cleared), and a name is unique.
+		$this->db->delete(SettingsEntity::Table)
+			->where('%n IN %in', SettingsEntity::ColumnName, array_keys($settings))
+			->execute();
+
+		foreach ($settings as $name => $value) {
+			$this->db->insert(SettingsEntity::Table, [
+				SettingsEntity::ColumnName => $name,
+				SettingsEntity::ColumnValue => $value,
+			])->execute();
 		}
 
 		$this->steps->setStep(4);

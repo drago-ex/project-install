@@ -82,7 +82,10 @@ final class InstallPresenter extends Presenter
 		}
 
 		InstallLock::create(dirname($this->tempPath));
-		$this->redirectUrl('/admin');
+
+		// A URL, not a link: the installer container does not know the presenters of the administration.
+		// The base path keeps it working when the project runs in a subdirectory.
+		$this->redirectUrl($this->getHttpRequest()->getUrl()->getBasePath() . 'admin');
 	}
 
 

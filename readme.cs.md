@@ -51,7 +51,9 @@ Na serveru ho ponechte a podle způsobu nasazení ho buď commitněte, nebo při
 ## Migrace
 
 Instalátor spustí migrace všech nainstalovaných balíčků v pořadí podle `migration-priority` a potom
-vlastní `migrations/` projektu, stejně jako `vendor/bin/migration db:migrate --packages`. Provedené soubory se zaznamenávají,
+vlastní `migrations/` projektu, stejně jako `vendor/bin/migration db:migrate --packages`. S nainstalovaným drago-ex/project-permission
+naimportuje po migracích balíčků i privilegia ostatních balíčků (jejich `migrations-permission/`, např. blog, statické stránky
+a přehled administrace), takže je jde rolím v administraci přidělit hned. Provedené soubory se zaznamenávají,
 takže instalátor jde po chybě spustit znovu a pozdější migrace se spouštějí z konzole:
 
 ```bash

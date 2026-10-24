@@ -100,8 +100,11 @@ readonly class MemoryMigrationRepository extends Repository
 }
 
 
-/** @return array{MigrationService, MemoryMigrationRepository, string} */
-function createService(): array
+/**
+ * @param list<string> $permissionFiles names of files in vendor/acme/blog/migrations-permission/
+ * @return array{MigrationService, MemoryMigrationRepository, string}
+ */
+function createService(array $permissionFiles = []): array
 {
 	$root = __DIR__ . '/../../tmp/project-' . bin2hex(random_bytes(4));
 	@mkdir($root . '/vendor/acme/users/migrations', 0o777, true);
@@ -109,6 +112,10 @@ function createService(): array
 	Helpers::purge($root . '/migrations');
 	file_put_contents($root . '/vendor/acme/users/migrations/001_first.sql', 'SELECT 1;');
 	file_put_contents($root . '/migrations/002_second.sql', 'SELECT 2;');
+	@mkdir($root . '/vendor/acme/blog/migrations-permission', 0o777, true);
+	foreach ($permissionFiles as $file) {
+		file_put_contents($root . '/vendor/acme/blog/migrations-permission/' . $file, 'INSERT IGNORE INTO resources VALUES (1);');
+	}
 
 	// The order comes from MigrationFiles::forProject(); here a fixed list with one package and the project.
 	$list = fn(string $projectRoot): array => [
@@ -116,8 +123,14 @@ function createService(): array
 		['file' => realpath($projectRoot) . '/migrations/002_second.sql', 'package' => 'core', 'priority' => null],
 	];
 
+	// MigrationService::permissionMigrations() lists the migrations-permission/ of the installed packages
+	$listPermission = fn(): array => array_map(
+		fn(string $file): array => ['file' => realpath($root) . '/vendor/acme/blog/migrations-permission/' . $file, 'package' => 'acme/blog', 'priority' => 110],
+		$permissionFiles,
+	);
+
 	$repository = new MemoryMigrationRepository;
-	return [new MigrationService(new MigrationRunner($repository), $root, $list), $repository, $root];
+	return [new MigrationService(new MigrationRunner($repository), $root, $list, $listPermission), $repository, $root];
 }
 
 
@@ -179,4 +192,18 @@ test('Only files from the list of migrations are accepted', function () {
 	Assert::exception(fn() => $service->run('../app.neon'), RuntimeException::class, 'Migration file not found.');
 	Assert::exception(fn() => $service->run('migrations/missing.sql'), RuntimeException::class, 'Migration file not found.');
 	Assert::exception(fn() => $service->run('app/db.neon'), RuntimeException::class, 'Migration file not found.');
+});
+
+
+test('With project-permission, the privileges of the packages run after their migrations, before the project ones', function () {
+	[$service, $repository] = createService(['001_blog_resources.sql']);
+	Assert::same([
+		'vendor/acme/users/migrations/001_first.sql',
+		'vendor/acme/blog/migrations-permission/001_blog_resources.sql',
+		'migrations/002_second.sql',
+	], $service->getFiles());
+
+	$result = $service->run('vendor/acme/blog/migrations-permission/001_blog_resources.sql');
+	Assert::same('success', $result['status']);
+	Assert::same(['acme/blog/001_blog_resources.sql'], array_keys($repository->getRecords()));
 });

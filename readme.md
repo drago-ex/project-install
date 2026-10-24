@@ -51,7 +51,9 @@ Keep it on the server, and commit it or add it to `.gitignore` depending on how 
 ## Migrations
 
 The installer runs the migrations of all installed packages in their `migration-priority` order, then the project's
-own `migrations/`, the same way as `vendor/bin/migration db:migrate --packages`. Executed files are recorded,
+own `migrations/`, the same way as `vendor/bin/migration db:migrate --packages`. With drago-ex/project-permission installed, it also
+imports the privileges of the other packages (their `migrations-permission/`, e.g. the blog, static pages and the
+dashboard) after their migrations, so roles can be given them in the administration at once. Executed files are recorded,
 so the installer can be run again after a failure, and later migrations run from the console:
 
 ```bash

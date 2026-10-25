@@ -37,7 +37,7 @@ final readonly class MigrationService
 	/**
 	 * @param (Closure(string): list<array{file: string, package: string, priority: ?int}>)|null $listMigrations
 	 *        for tests; MigrationFiles::forProject() by default
-	 * @param (Closure(): list<array{file: string, package: string, priority: ?int}>)|null $listPermissionMigrations
+	 * @param (Closure(string): list<array{file: string, package: string, priority: ?int}>)|null $listPermissionMigrations
 	 *        for tests; permissionMigrations() by default
 	 */
 	public function __construct(
@@ -51,19 +51,29 @@ final readonly class MigrationService
 
 	/**
 	 * The migrations-permission/ files of the installed packages in their migration-priority order,
-	 * or none without drago-ex/project-permission.
+	 * or none without drago-ex/project-permission. Paths are resolved like MigrationFiles::forProject()
+	 * (not vendor/composer/../), so the runner records them under their package; the project itself and
+	 * drago-ex/migration are left out.
 	 * @return list<array{file: string, package: string, priority: ?int}>
 	 */
-	public static function permissionMigrations(): array
+	public static function permissionMigrations(string $projectRoot): array
 	{
 		if (!InstalledVersions::isInstalled(self::PermissionPackage)) {
 			return [];
 		}
 
 		$packages = [];
+		$root = realpath($projectRoot);
+		$migration = InstalledVersions::getInstallPath('drago-ex/migration');
+		$migration = $migration !== null ? realpath($migration) : false;
 		foreach (InstalledVersions::getInstalledPackages() as $name) {
 			$path = InstalledVersions::getInstallPath($name);
-			if ($path !== null && is_dir($path . '/' . self::PermissionDir)) {
+			$path = $path !== null ? realpath($path) : false;
+			if ($path === false || $path === $root || $path === $migration) {
+				continue;
+			}
+
+			if (is_dir($path . '/' . self::PermissionDir)) {
 				$packages[] = [
 					'name' => $name,
 					'priority' => MigrationFiles::packagePriority($path),
@@ -141,11 +151,12 @@ final readonly class MigrationService
 		$list = $this->listMigrations ?? MigrationFiles::forProject(...);
 		$listPermission = $this->listPermissionMigrations ?? self::permissionMigrations(...);
 
-		// the privileges go after the package migrations (they need the resources table), before the project's own
+		// the privileges go after the package migrations (they need the resources table), before the project's own,
+		// which are the files without a priority
 		$all = $list($this->projectRoot);
-		$projectStart = array_search('core', array_column($all, 'package'), true);
+		$projectStart = array_search(null, array_column($all, 'priority'), true);
 		$projectStart = $projectStart === false ? count($all) : $projectStart;
-		array_splice($all, $projectStart, 0, $listPermission());
+		array_splice($all, $projectStart, 0, $listPermission($this->projectRoot));
 
 		$migrations = [];
 		foreach ($all as $migration) {

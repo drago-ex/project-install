@@ -41,7 +41,7 @@ přenášejte ručně.
 
 Dokud aplikace není nainstalovaná, `www/index.php` spouští jen instalátor (`app/Presentation/Install`).
 Průvodce otestuje připojení k databázi, zapíše `app/db.neon`, spustí migrace, nastaví web
-a vytvoří účet administrátora. Kroky nejde přeskočit ani opakovat.
+a vytvoří účet administrátora. Kroky jdou v pořadí a nejde je přeskočit.
 
 ## Zámek instalace
 

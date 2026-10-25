@@ -41,7 +41,7 @@ versions manually.
 
 Until the application is installed, `www/index.php` runs only the installer (`app/Presentation/Install`).
 The wizard tests the database connection, writes `app/db.neon`, runs the migrations, sets up the website
-and creates the administrator account. The steps cannot be skipped or repeated.
+and creates the administrator account. The steps go in order and cannot be skipped.
 
 ## Installation lock
 

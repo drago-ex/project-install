@@ -40,9 +40,7 @@ Na serveru ho ponechte a podle způsobu nasazení ho buď commitněte, nebo při
 ## Migrace
 
 Instalátor spustí migrace všech nainstalovaných balíčků v pořadí podle `migration-priority` a potom
-vlastní `migrations/` projektu, stejně jako `vendor/bin/migration db:migrate --packages`. S nainstalovaným drago-ex/project-permission
-naimportuje po migracích balíčků i privilegia ostatních balíčků (jejich `migrations-permission/`, např. blog, statické stránky
-a přehled administrace), takže je jde rolím v administraci přidělit hned. Provedené soubory se zaznamenávají,
+vlastní `migrations/` projektu, stejně jako `vendor/bin/migration db:migrate --packages`. Provedené soubory se zaznamenávají,
 takže instalátor jde po chybě spustit znovu a pozdější migrace se spouštějí z konzole:
 
 ```bash
@@ -58,3 +56,20 @@ správného vlastníka:
 ```bash
 docker compose exec -u www-data server php vendor/bin/migration list
 ```
+
+## Rozšíření instalátoru
+
+Jiný balíček může přidat vlastní kroky službou v `app/Presentation/Install/` (instalátor načítá její neon
+soubory a třídy):
+
+- štítek `install.migrations`: volatelný objekt, který dostane kořen projektu a vrátí další migrace; spustí se po
+  migracích balíčků a před vlastními migracemi projektu,
+- štítek `install.account`: volatelný objekt, který dostane ID nového administrátora.
+
+```neon
+services:
+	- {factory: App\Presentation\Install\AdminRole, tags: [install.account], autowired: no}
+```
+
+[drago-ex/project-preset-permission](https://github.com/drago-ex/project-preset-permission) takto přidává privilegia
+a roli `admin`.

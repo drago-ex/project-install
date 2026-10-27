@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Presentation\Install;
 
 use App\Core\Settings\SettingsEntity;
-use App\Presentation\Backend\Permission\Component\Users\UsersRolesEntity;
 use App\Presentation\Install\Factory\DatabaseFactory;
 use App\Presentation\Install\Factory\WebsiteFactory;
 use App\Presentation\Sign\SignUpFactory;
@@ -19,11 +18,16 @@ use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
 
 
-/** @property InstallTemplate $template */
+/**
+ * Other packages may act on the new administrator account by a service tagged `install.account`: a callable object
+ * taking the id of the user, run right after the account is created.
+ * @property InstallTemplate $template
+ */
 final class InstallPresenter extends Presenter
 {
 	use TranslatorAdapter;
 
+	/** @param array<callable(int): void> $accountHandlers services tagged install.account */
 	public function __construct(
 		private readonly string $tempPath,
 		private readonly Connection $connection,
@@ -32,6 +36,7 @@ final class InstallPresenter extends Presenter
 		private readonly WebsiteFactory $websiteFactory,
 		private readonly SignUpFactory $userSingUpFactory,
 		private readonly MigrationService $migrationService,
+		private readonly array $accountHandlers = [],
 	) {
 		parent::__construct();
 	}
@@ -136,10 +141,11 @@ final class InstallPresenter extends Presenter
 		$form->setTranslator($this->translator);
 		$form->onValidate[] = fn() => $this->requireStep(4);
 		$form->onSuccess[] = function () {
-			$this->connection->insert(UsersRolesEntity::Table, [
-				UsersRolesEntity::ColumnUserId => $this->connection->getInsertId(),
-				UsersRolesEntity::ColumnRoleId => 1,
-			])->execute();
+			$userId = (int) $this->connection->getInsertId();
+			foreach ($this->accountHandlers as $handler) {
+				$handler($userId);
+			}
+
 			$this->steps->setStep(5);
 			$this->flashMessage('Account administrator registration successful.', Alert::Success);
 		};

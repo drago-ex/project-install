@@ -21,19 +21,10 @@ Balíček pro instalaci aplikace.
 composer require drago-ex/project-install
 ```
 
-## Soubory projektu
+## Soubory kopírované do projektu
 
-Kopírování souborů obstarává automaticky [drago-ex/project-tools](https://github.com/drago-ex/project-tools),
-který musí být v projektu nainstalovaný. Bez něj zkopírujte soubory ručně podle sekce `copy`
-v `composer.json` tohoto balíčku. Pro přeskočení balíčku nastavte `"skip": true` v
-`extra.drago-tools.packages.<package-name>` v kořenovém `composer.json`.
-
-> Upozornění: Balíček používá sekci `replace`, takže některé soubory **přepíše, pokud už existují**.
-> Tyto soubory ručně neupravujte; pokud je chcete spravovat sami, použijte volbu `skip`.
-
-Nahrazované soubory (`app/Bootstrap.php`, `app/app.neon`, `www/`) se kopírují jen jednou (`replace-once`).
-Novější verze balíčku je v existujícím projektu neaktualizují, takže změny z nových verzí
-přenášejte ručně.
+Soubory do projektu kopíruje [drago-ex/project-tools](https://github.com/drago-ex/project-tools)
+podle nastavení v `extra.drago-tools` v `composer.json` tohoto balíčku.
 
 ## Jak to funguje
 

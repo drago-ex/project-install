@@ -21,19 +21,10 @@ Application installation package.
 composer require drago-ex/project-install
 ```
 
-## Project files
+## Files copied into the project
 
-File copying is handled automatically by [drago-ex/project-tools](https://github.com/drago-ex/project-tools),
-which must be installed in your project. Without it, copy the files manually according to the `copy` section
-in this package's `composer.json`. To skip this package, set `"skip": true` under
-`extra.drago-tools.packages.<package-name>` in your root `composer.json`.
-
-> Warning: This package uses the `replace` section, which means some files will be **overwritten if they already exist**.
-> Avoid manual edits to those files; use the `skip` option if you need to manage them yourself.
-
-The replaced files (`app/Bootstrap.php`, `app/app.neon`, `www/`) are copied only once (`replace-once`).
-Later versions of this package do not update them in an existing project, so apply changes from new
-versions manually.
+The files are copied into the project by [drago-ex/project-tools](https://github.com/drago-ex/project-tools),
+as set in `extra.drago-tools` of this package's `composer.json`.
 
 ## How it works
 

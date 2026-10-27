@@ -1,7 +1,5 @@
 # Drago Project install
 
-English | [Čeština](readme.cs.md)
-
 Application installation package.
 
 [![PHP version](https://badge.fury.io/ph/drago-ex%2Fproject-install.svg)](https://badge.fury.io/ph/drago-ex%2Fproject-install)

@@ -68,8 +68,5 @@ soubory a třídy):
 
 ```neon
 services:
-	- {factory: App\Presentation\Install\AdminRole, tags: [install.account], autowired: no}
+	- {factory: App\Presentation\Install\AccountSetup, tags: [install.account], autowired: no}
 ```
-
-[drago-ex/project-preset-permission](https://github.com/drago-ex/project-preset-permission) takto přidává privilegia
-a roli `admin`.

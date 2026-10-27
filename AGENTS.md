@@ -7,7 +7,7 @@ Use this file as package-specific guidance when working in this repository. Keep
 - **Type**: drago-tools-resource
 - **Purpose**: Application installation package.
 - **PHP**: >=8.3 <9
-- **Runtime dependencies**: drago-ex/bootstrap (^2.0), drago-ex/translator (^4.0 || ^5.0), drago-ex/migration (^2.3), drago-ex/application (^3.0 || ^4.0), drago-ex/component (^2.0 || ^3.0), drago-ex/form (^2.0 || ^3.0), drago-ex/database (^3.0 || ^4.0), drago-ex/project-docker (^2.0), drago-ex/project-docker-db (^2.0), drago-ex/project-front (^2.0), drago-ex/project-auth (^2.0), drago-ex/project-backend (^2.0), drago-ex/project-backend-ui (^2.0), drago-ex/project-settings (^1.0), drago-ex/project-permission (^1.0)
+- **Runtime dependencies**: drago-ex/bootstrap (^2.0), drago-ex/translator (^4.0), drago-ex/migration (^1.0), drago-ex/application (^4.0), drago-ex/component (^3.0), drago-ex/form (^3.0), drago-ex/database (^4.0), drago-ex/project-docker (^1.0), drago-ex/project-docker-db (^1.0), drago-ex/project-front (^1.0), drago-ex/project-auth (^1.0), drago-ex/project-backend (^1.0), drago-ex/project-backend-ui (^1.0), drago-ex/project-settings (^1.0), drago-ex/project-permission (^1.0)
 - **License**: MIT
 
 ## Repository Layout
@@ -27,7 +27,7 @@ Use this file as package-specific guidance when working in this repository. Keep
 ## Dependencies
 
 Composer constraints describe the package contract. Before changing integration behavior, inspect the source and the actual call sites in this package; do not infer runtime usage solely from dependency declarations.
-Development dependencies include phpstan/phpstan-nette (^2.0), drago-ex/project-tools (^2.0), nette/tester (^2.5).
+Development dependencies include phpstan/phpstan-nette (^2.0), drago-ex/project-tools (^1.0), nette/tester (^2.5).
 
 ## Essential Commands
 

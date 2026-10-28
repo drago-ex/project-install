@@ -8,12 +8,7 @@ Balíček pro instalaci aplikace.
 ## Požadavky
 
 - PHP >= 8.3, < 9
-- Nette Framework
-- Composer
-- Bootstrap
-- Naja
-- Node.js
-- Základní balíčky Drago Project
+- [Drago Project](https://github.com/drago-ex/project)
 
 ## Instalace
 

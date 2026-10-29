@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Presentation\Install;
 
@@ -10,6 +8,7 @@ use Drago\Migration\MigrationRunner;
 use RuntimeException;
 use Throwable;
 use Tracy\Debugger;
+use function count, strlen;
 
 
 /**
@@ -26,16 +25,18 @@ use Tracy\Debugger;
  */
 final readonly class MigrationService
 {
-	/**
-	 * @param (Closure(string): list<array{file: string, package: string, priority: ?int}>)|null $listMigrations
-	 *        for tests; MigrationFiles::forProject() by default
-	 * @param array<callable(string): list<array{file: string, package: string, priority: ?int}>> $sources
-	 *        services tagged install.migrations
-	 */
 	public function __construct(
 		private MigrationRunner $runner,
 		private string $projectRoot,
+		/**
+		 * For tests; MigrationFiles::forProject() by default.
+		 * @var (Closure(string): list<array{file: string, package: string, priority: ?int}>)|null
+		 */
 		private ?Closure $listMigrations = null,
+		/**
+		 * Services tagged install.migrations.
+		 * @var array<callable(string): list<array{file: string, package: string, priority: ?int}>>
+		 */
 		private array $sources = [],
 	) {
 	}

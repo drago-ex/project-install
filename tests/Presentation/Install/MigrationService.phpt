@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: App\Presentation\Install\MigrationService
  */
-
-declare(strict_types=1);
 
 use App\Presentation\Install\MigrationService;
 use Drago\Migration\MigrationRunner;
@@ -107,8 +105,8 @@ readonly class MemoryMigrationRepository extends Repository
 function createService(array $sources = []): array
 {
 	$root = __DIR__ . '/../../tmp/project-' . bin2hex(random_bytes(4));
-	@mkdir($root . '/vendor/acme/users/migrations', 0o777, true);
-	@mkdir($root . '/migrations', 0o777, true);
+	@mkdir($root . '/vendor/acme/users/migrations', 0o777, true); // @ directory may already exist
+	@mkdir($root . '/migrations', 0o777, true); // @ directory may already exist
 	Helpers::purge($root . '/migrations');
 	file_put_contents($root . '/vendor/acme/users/migrations/001_first.sql', 'SELECT 1;');
 	file_put_contents($root . '/migrations/002_second.sql', 'SELECT 2;');
@@ -187,9 +185,13 @@ test('Only files from the list of migrations are accepted', function () {
 
 test('Migrations of a service tagged install.migrations run after the package ones, before the project ones', function () {
 	$source = function (string $projectRoot): array {
-		@mkdir($projectRoot . '/vendor/acme/blog/migrations-permission', 0o777, true);
+		@mkdir($projectRoot . '/vendor/acme/blog/migrations-permission', 0o777, true); // @ directory may already exist
 		file_put_contents($projectRoot . '/vendor/acme/blog/migrations-permission/001_blog_resources.sql', 'SELECT 3;');
-		return [['file' => realpath($projectRoot) . '/vendor/acme/blog/migrations-permission/001_blog_resources.sql', 'package' => 'acme/blog', 'priority' => 110]];
+		return [[
+			'file' => realpath($projectRoot) . '/vendor/acme/blog/migrations-permission/001_blog_resources.sql',
+			'package' => 'acme/blog',
+			'priority' => 110,
+		]];
 	};
 	[$service, $repository] = createService([$source]);
 	Assert::same([

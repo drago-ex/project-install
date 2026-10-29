@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-if (@!include __DIR__ . '/../vendor/autoload.php') {
+if (@!include __DIR__ . '/../vendor/autoload.php') { // @ dependencies may not be installed
 	echo 'Install dependencies using `composer install`';
 	exit(1);
 }
@@ -26,5 +24,5 @@ spl_autoload_register(function (string $class): void {
 Tester\Environment::setup();
 Tester\Environment::setupFunctions();
 
-@mkdir(__DIR__ . '/tmp');
+@mkdir(__DIR__ . '/tmp'); // @ directory may already exist
 Tracy\Debugger::$logDirectory = __DIR__ . '/tmp';

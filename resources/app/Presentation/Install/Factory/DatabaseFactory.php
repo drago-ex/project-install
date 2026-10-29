@@ -1,11 +1,10 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Presentation\Install\Factory;
 
 use App\Presentation\Install\Steps;
 use dibi;
+use Dibi\Bridges\Nette\DibiExtension3;
 use Nette\Application\UI\Form;
 use Nette\DI\Config\Adapters\NeonAdapter;
 use Throwable;
@@ -54,7 +53,7 @@ final readonly class DatabaseFactory
 			if (dibi::connect($data->toArray())->isConnected()) {
 				$arr = [
 					'extensions' => [
-						'dibi' => 'Dibi\Bridges\Nette\DibiExtension3',
+						'dibi' => DibiExtension3::class,
 					],
 					'dibi' => [
 						'host' => $data->host,

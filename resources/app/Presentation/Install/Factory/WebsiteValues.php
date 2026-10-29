@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Presentation\Install\Factory;
 
@@ -9,8 +7,7 @@ use Drago\Utils\ExtraArrayHash;
 
 class WebsiteValues extends ExtraArrayHash
 {
-	public const string
-		Website = 'website',
+	public const string Website = 'website',
 		Description = 'description';
 
 	public string $website;

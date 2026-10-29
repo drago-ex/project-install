@@ -1,10 +1,9 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Install;
 
 use RuntimeException;
+use function sprintf;
 
 
 /**
@@ -13,8 +12,7 @@ use RuntimeException;
  */
 class InstallLock
 {
-	public const string
-		DirName = 'app',
+	public const string DirName = 'app',
 		LegacyDirName = 'temp',
 		FileName = 'installed.lock';
 
@@ -49,7 +47,7 @@ class InstallLock
 	{
 		$path = self::getPath($rootDir);
 		$content = $message . ': ' . date('Y-m-d H:i:s');
-		if (@file_put_contents($path, $content) === false) {
+		if (@file_put_contents($path, $content) === false) { // @ the failure is reported by the exception below
 			throw new RuntimeException("Unable to write the installation lock '$path'.");
 		}
 	}

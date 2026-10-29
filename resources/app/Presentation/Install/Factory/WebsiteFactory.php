@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Presentation\Install\Factory;
 
@@ -13,16 +11,10 @@ use Nette\Application\UI\Form;
 
 final readonly class WebsiteFactory
 {
-	private Steps $steps;
-	private Connection $db;
-
-
 	public function __construct(
-		Steps $steps,
-		Connection $db,
+		private Steps $steps,
+		private Connection $db,
 	) {
-		$this->steps = $steps;
-		$this->db = $db;
 	}
 
 

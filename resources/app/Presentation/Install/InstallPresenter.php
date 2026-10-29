@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Presentation\Install;
 
@@ -27,7 +25,6 @@ final class InstallPresenter extends Presenter
 {
 	use TranslatorAdapter;
 
-	/** @param array<callable(int): void> $accountHandlers services tagged install.account */
 	public function __construct(
 		private readonly string $tempPath,
 		private readonly Connection $connection,
@@ -36,6 +33,7 @@ final class InstallPresenter extends Presenter
 		private readonly WebsiteFactory $websiteFactory,
 		private readonly SignUpFactory $userSingUpFactory,
 		private readonly MigrationService $migrationService,
+		/** @var array<callable(int): void> services tagged install.account */
 		private readonly array $accountHandlers = [],
 	) {
 		parent::__construct();

@@ -23,11 +23,13 @@ final readonly class WebsiteFactory
 		$form = new Form;
 		$form->addText(WebsiteValues::Website, 'Site name')
 			->setHtmlAttribute('autocomplete', 'off')
-			->setRequired();
+			->setRequired()
+			->addRule($form::MaxLength, 'The site name can have at most %d characters.', SettingsEntity::ColumnValueSize);
 
 		$form->addText(WebsiteValues::Description, 'Site description')
 			->setHtmlAttribute('autocomplete', 'off')
-			->setRequired();
+			->setRequired()
+			->addRule($form::MaxLength, 'The site description can have at most %d characters.', SettingsEntity::ColumnValueSize);
 
 		$form->addSubmit('send', 'Save data');
 		$form->onSuccess[] = $this->processWebsiteSettingsForm(...);
@@ -36,7 +38,8 @@ final readonly class WebsiteFactory
 	}
 
 
-	/** Handles the successful submission of the website settings form.
+	/**
+	 * Handles the successful submission of the website settings form.
 	 * @throws Exception
 	 */
 	public function processWebsiteSettingsForm(Form $form, WebsiteValues $data): void

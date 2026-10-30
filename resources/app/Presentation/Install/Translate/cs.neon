@@ -53,6 +53,8 @@
 # component website
 "Site name": "Název webu"
 "Site description": "Popis webu"
+"The site name can have at most %d characters.": "Název webu může mít nejvýše %d znaků."
+"The site description can have at most %d characters.": "Popis webu může mít nejvýše %d znaků."
 "Save data": "Uložit nastavení"
 "Site settings successful.": "Nastavení webu bylo úspěšně uloženo."
 

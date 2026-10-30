@@ -89,9 +89,7 @@ final readonly class MigrationService
 	}
 
 
-	/**
-	 * @return array<string, string> path relative to the project root => absolute path, in the order they run
-	 */
+	/** @return array<string, string> path relative to the project root => absolute path, in the order they run */
 	private function migrations(): array
 	{
 		$root = str_replace('\\', '/', (string) (realpath($this->projectRoot) ?: $this->projectRoot));

@@ -7,13 +7,12 @@ use function sprintf;
 
 
 /**
- * Marks a finished installation. The lock lives in the app directory next to db.neon, which
- * the installer writes anyway, so clearing temp/ does not reopen the installer.
+ * Marks a finished installation. The lock lives in local/ next to db.neon: the directory the installer
+ * writes to, which is kept on the server and not in git, so clearing temp/ does not reopen the installer.
  */
 class InstallLock
 {
-	public const string DirName = 'app',
-		LegacyDirName = 'temp',
+	public const string DirName = 'local',
 		FileName = 'installed.lock';
 
 
@@ -23,22 +22,9 @@ class InstallLock
 	}
 
 
-	/**
-	 * Also accepts the lock in temp/ written by older versions and moves it to the current location.
-	 */
 	public static function exists(string $rootDir): bool
 	{
-		if (is_file(self::getPath($rootDir))) {
-			return true;
-		}
-
-		$legacyPath = sprintf('%s/%s/%s', $rootDir, self::LegacyDirName, self::FileName);
-		if (is_file($legacyPath)) {
-			self::create($rootDir, 'moved from ' . self::LegacyDirName);
-			return true;
-		}
-
-		return false;
+		return is_file(self::getPath($rootDir));
 	}
 
 

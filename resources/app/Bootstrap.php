@@ -57,7 +57,7 @@ final class Bootstrap
 			->register();
 
 		$this->configurator->addFindConfig(__DIR__ . '/Presentation/Install', 'Translate');
-		$this->configurator->addConfig(__DIR__ . '/db.neon');
+		$this->configurator->addConfig($this->rootDir . '/local/db.neon');
 		return $this->configurator->createContainer();
 	}
 
@@ -75,6 +75,7 @@ final class Bootstrap
 	/**
 	 * Shared by the web and console containers. The RobotLoader is also used by Nette to find
 	 * presenters, so excluding the installer here keeps InstallPresenter out of both containers.
+	 * The database connection is in local/db.neon, written by the installer.
 	 * @throws Throwable
 	 */
 	private function setupContainer(): void
@@ -85,5 +86,6 @@ final class Bootstrap
 			->register();
 
 		$this->configurator->addFindConfig(__DIR__, 'Translate', 'Install');
+		$this->configurator->addConfig($this->rootDir . '/local/db.neon');
 	}
 }

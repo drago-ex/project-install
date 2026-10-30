@@ -24,13 +24,14 @@ as set in `extra.drago-tools` of this package's `composer.json`.
 ## How it works
 
 Until the application is installed, `www/index.php` runs only the installer (`app/Presentation/Install`).
-The wizard tests the database connection, writes `app/db.neon`, runs the migrations, sets up the website
+The wizard tests the database connection, writes `local/db.neon`, runs the migrations, sets up the website
 and creates the administrator account. The steps go in order and cannot be skipped.
 
 ## Installation lock
 
-Finishing the wizard writes `app/installed.lock`; while it exists, the application runs instead of the installer.
-Keep it on the server, and commit it or add it to `.gitignore` depending on how you deploy.
+Finishing the wizard writes `local/installed.lock`; while it exists, the application runs instead of the installer.
+The `local/` directory holds what the installer writes for this server (`db.neon` and the lock): the web server
+must be able to write to it, keep it on the server and out of git.
 
 ## Migrations
 

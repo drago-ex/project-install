@@ -24,13 +24,14 @@ podle nastavení v `extra.drago-tools` v `composer.json` tohoto balíčku.
 ## Jak to funguje
 
 Dokud aplikace není nainstalovaná, `www/index.php` spouští jen instalátor (`app/Presentation/Install`).
-Průvodce otestuje připojení k databázi, zapíše `app/db.neon`, spustí migrace, nastaví web
+Průvodce otestuje připojení k databázi, zapíše `local/db.neon`, spustí migrace, nastaví web
 a vytvoří účet administrátora. Kroky jdou v pořadí a nejde je přeskočit.
 
 ## Zámek instalace
 
-Dokončením průvodce vznikne `app/installed.lock`; dokud existuje, běží místo instalátoru aplikace.
-Na serveru ho ponechte a podle způsobu nasazení ho buď commitněte, nebo přidejte do `.gitignore`.
+Dokončením průvodce vznikne `local/installed.lock`; dokud existuje, běží místo instalátoru aplikace.
+Adresář `local/` obsahuje, co instalátor zapisuje pro tento server (`db.neon` a zámek): webový server
+do něj musí mít právo zápisu, na serveru ho ponechte a do gitu nepatří.
 
 ## Migrace
 

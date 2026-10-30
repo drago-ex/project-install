@@ -6,13 +6,13 @@ use Nette\Caching\Cache;
 use Throwable;
 
 
-class Steps
+readonly class Steps
 {
 	private const string CacheKey = 'Install step';
 
 
 	public function __construct(
-		private readonly Cache $cache,
+		private Cache $cache,
 	) {
 	}
 

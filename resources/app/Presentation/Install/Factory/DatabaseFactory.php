@@ -7,6 +7,7 @@ use dibi;
 use Dibi\Bridges\Nette\DibiExtension3;
 use Nette\Application\UI\Form;
 use Nette\DI\Config\Adapters\NeonAdapter;
+use Nette\Utils\FileSystem;
 use Throwable;
 use Tracy\Debugger;
 use Tracy\ILogger;
@@ -18,6 +19,7 @@ final readonly class DatabaseFactory
 		private Steps $steps,
 		private NeonAdapter $neonAdapter,
 		private string $configPath,
+		private string $tempDir,
 	) {
 	}
 
@@ -71,6 +73,8 @@ final readonly class DatabaseFactory
 					throw new \RuntimeException('Cannot write to file: ' . $filePath);
 				}
 
+				// Without debug mode Nette does not notice the changed config, so the compiled containers must go.
+				FileSystem::delete($this->tempDir . '/cache/nette.configurator');
 				$this->steps->setStep(2);
 			}
 

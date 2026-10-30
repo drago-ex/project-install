@@ -11,7 +11,7 @@ services:
 	- Drago\Migration\MigrationRunner
 	# further migrations come from services tagged install.migrations (run after the package migrations)
 	- App\Presentation\Install\MigrationService(projectRoot: %appDir%/.., sources: tagged(install.migrations))
-	- App\Presentation\Install\Factory\DatabaseFactory(configPath: %appDir%/../local)
+	- App\Presentation\Install\Factory\DatabaseFactory(configPath: %appDir%/../local, tempDir: %tempDir%)
 	- App\Presentation\Install\Factory\WebsiteFactory
 	- App\Presentation\Sign\Factory
 	- App\Presentation\Sign\RateLimiter

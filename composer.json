@@ -15,10 +15,10 @@
 		"drago-ex/project-docker": "^1.0",
 		"drago-ex/project-docker-db": "^1.1",
 		"drago-ex/project-front": "^3.0",
-		"drago-ex/project-auth": "^1.0",
+		"drago-ex/project-auth": "^1.0 || ^2.0",
 		"drago-ex/project-backend": "^1.0",
 		"drago-ex/project-backend-ui": "^1.0",
-		"drago-ex/project-settings": "^1.1"
+		"drago-ex/project-settings": "^1.1 || ^2.0"
 	},
 	"require-dev": {
 		"phpstan/phpstan-nette": "^2.0",

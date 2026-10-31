@@ -11,7 +11,7 @@
 		"drago-ex/application": "^4.0",
 		"drago-ex/component": "^3.0",
 		"drago-ex/form": "^3.0",
-		"drago-ex/database": "^4.0",
+		"drago-ex/database": "^4.0 || ^5.0",
 		"drago-ex/project-docker": "^1.0",
 		"drago-ex/project-docker-db": "^1.1",
 		"drago-ex/project-front": "^3.0",
